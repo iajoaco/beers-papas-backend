@@ -20,4 +20,9 @@ public class UserController {
         User user = userService.registerUser(userDTO);
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("API is working!");
+    }
 } 
