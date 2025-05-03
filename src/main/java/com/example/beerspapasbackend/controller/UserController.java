@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("API is working!");
+    public String test() {
+        return "API is working!";
     }
 } 
