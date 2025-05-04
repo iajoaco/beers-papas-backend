@@ -1,6 +1,9 @@
 package com.example.beerspapasbackend.controller;
 
+import com.example.beerspapasbackend.dto.ProductRequest;
 import com.example.beerspapasbackend.model.Product;
+import com.example.beerspapasbackend.model.Place;
+import com.example.beerspapasbackend.model.ProductCategory;
 import com.example.beerspapasbackend.repository.ProductRepository;
 import com.example.beerspapasbackend.repository.PlaceRepository;
 import com.example.beerspapasbackend.repository.ProductCategoryRepository;
@@ -25,17 +28,21 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest request) {
         // Verificar que el lugar existe
-        if (!placeRepository.existsById(product.getPlace().getPlaceId())) {
-            return ResponseEntity.badRequest().build();
-        }
+        Place place = placeRepository.findById(request.getPlaceId())
+                .orElseThrow(() -> new RuntimeException("Place not found"));
 
-        // Verificar que la categoría existe si se proporciona
-        if (product.getCategory() != null && 
-            !categoryRepository.existsById(product.getCategory().getProductCategoryId())) {
-            return ResponseEntity.badRequest().build();
-        }
+        // Verificar que la categoría existe
+        ProductCategory category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setDescription(request.getDescription());
+        product.setPrice(request.getPrice());
+        product.setPlace(place);
+        product.setCategory(category);
 
         return ResponseEntity.ok(productRepository.save(product));
     }
