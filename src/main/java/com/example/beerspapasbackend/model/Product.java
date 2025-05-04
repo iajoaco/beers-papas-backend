@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "products")
+@Table(name = "products", 
+       uniqueConstraints = @UniqueConstraint(columnNames = {"place_id", "name"}))
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +25,13 @@ public class Product {
     @JoinColumn(name = "product_category_id")
     private ProductCategory category;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 2)
     private Double price;
 
-    @Column(name = "average_rating")
+    @Column(name = "average_rating", precision = 3, scale = 2)
     private Double averageRating = 0.0;
 
     @Column(name = "rating_count")

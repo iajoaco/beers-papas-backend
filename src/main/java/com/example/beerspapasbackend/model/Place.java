@@ -23,21 +23,23 @@ public class Place {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 8)
     private Double latitude;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 11, scale = 8)
     private Double longitude;
 
     private String phone;
     private String email;
     private String website;
+
+    @Column(name = "opening_hours", columnDefinition = "TEXT")
     private String openingHours;
 
     @Column(name = "rated_products_count")
     private Integer ratedProductsCount = 0;
 
-    @Column(name = "average_rating")
+    @Column(name = "average_rating", precision = 3, scale = 2)
     private Double averageRating = 0.0;
 
     @Column(name = "created_at")

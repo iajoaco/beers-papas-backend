@@ -2,6 +2,7 @@ package com.example.beerspapasbackend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -9,7 +10,8 @@ import lombok.Data;
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "rating_id")
+    private Long ratingId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,8 +26,16 @@ public class Rating {
     private Product product;
 
     @Column(nullable = false)
-    private Integer score;
+    private Double rating;
 
     @Column(length = 500)
     private String comment;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 } 

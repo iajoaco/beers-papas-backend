@@ -41,7 +41,7 @@ public class RatingService {
         rating.setUser(user);
         rating.setPlace(place);
         rating.setProduct(product);
-        rating.setScore(ratingRequest.getScore());
+        rating.setRating(ratingRequest.getRating());
         rating.setComment(ratingRequest.getComment());
 
         return ratingRepository.save(rating);
