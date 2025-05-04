@@ -41,4 +41,9 @@ public class PlaceController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Place>> getPlacesByCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(placeRepository.findByCategoryCategoryId(categoryId));
+    }
 } 

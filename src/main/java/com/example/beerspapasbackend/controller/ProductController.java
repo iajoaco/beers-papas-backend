@@ -51,4 +51,14 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<List<Product>> getProductsByPlace(@PathVariable Long placeId) {
+        return ResponseEntity.ok(productRepository.findByPlacePlaceId(placeId));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId) {
+        return ResponseEntity.ok(productRepository.findByCategoryProductCategoryId(categoryId));
+    }
 } 
