@@ -25,7 +25,7 @@ public class Rating {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DECIMAL(3,2)")
     private Double rating;
 
     @Column(length = 500)

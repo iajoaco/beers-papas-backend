@@ -23,10 +23,10 @@ public class Place {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false, precision = 10, scale = 8)
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,8)")
     private Double latitude;
 
-    @Column(nullable = false, precision = 11, scale = 8)
+    @Column(nullable = false, columnDefinition = "DECIMAL(11,8)")
     private Double longitude;
 
     private String phone;
@@ -39,7 +39,7 @@ public class Place {
     @Column(name = "rated_products_count")
     private Integer ratedProductsCount = 0;
 
-    @Column(name = "average_rating", precision = 3, scale = 2)
+    @Column(name = "average_rating", columnDefinition = "DECIMAL(3,2)")
     private Double averageRating = 0.0;
 
     @Column(name = "created_at")
