@@ -5,11 +5,13 @@ import com.example.beerspapasbackend.dto.LoginResponse;
 import com.example.beerspapasbackend.model.User;
 import com.example.beerspapasbackend.service.UserService;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @RestController
@@ -17,7 +19,7 @@ import java.util.Date;
 public class AuthController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final String SECRET_KEY = "tu_clave_secreta_muy_segura_y_larga_para_firmar_el_token";
+    private final String SECRET_KEY = "tu_clave_secreta_muy_segura_y_larga_para_firmar_el_token_123456789";
 
     public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -39,12 +41,14 @@ public class AuthController {
     }
 
     private String generateToken(User user) {
+        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getUserId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(key)
                 .compact();
     }
 } 
