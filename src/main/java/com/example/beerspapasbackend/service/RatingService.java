@@ -6,6 +6,8 @@ import com.example.beerspapasbackend.repository.PlaceRepository;
 import com.example.beerspapasbackend.repository.ProductRepository;
 import com.example.beerspapasbackend.repository.RatingRepository;
 import com.example.beerspapasbackend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +29,19 @@ public class RatingService {
     }
 
     @Transactional
-    public Rating createRating(String username, RatingRequest ratingRequest) {
+    public Rating createRating(RatingRequest ratingRequest) {
+        // Obtener el usuario del token JWT
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
-        Place place = placeRepository.findById(ratingRequest.getPlaceId())
-                .orElseThrow(() -> new RuntimeException("Place not found"));
-        
         Product product = productRepository.findById(ratingRequest.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Obtener el lugar del producto
+        Place place = product.getPlace();
 
         Rating rating = new Rating();
         rating.setUser(user);

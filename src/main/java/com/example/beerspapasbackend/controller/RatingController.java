@@ -16,23 +16,17 @@ public class RatingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRating(
-            @RequestHeader("X-Username") String username,
-            @RequestBody RatingRequest ratingRequest) {
+    public ResponseEntity<?> createRating(@RequestBody RatingRequest ratingRequest) {
         try {
-            if (username == null || username.trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("El nombre de usuario es requerido");
+            if (ratingRequest.getProductId() == null) {
+                return ResponseEntity.badRequest().body("El ID del producto es requerido");
             }
 
-            if (ratingRequest.getPlaceId() == null || ratingRequest.getProductId() == null) {
-                return ResponseEntity.badRequest().body("El ID del lugar y del producto son requeridos");
+            if (ratingRequest.getRating() == null || ratingRequest.getRating() < 1 || ratingRequest.getRating() > 5) {
+                return ResponseEntity.badRequest().body("La valoración debe estar entre 1 y 5");
             }
 
-            if (ratingRequest.getRating() == null || ratingRequest.getRating() < 0 || ratingRequest.getRating() > 5) {
-                return ResponseEntity.badRequest().body("La valoración debe estar entre 0 y 5");
-            }
-
-            Rating rating = ratingService.createRating(username, ratingRequest);
+            Rating rating = ratingService.createRating(ratingRequest);
             return ResponseEntity.ok(rating);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
