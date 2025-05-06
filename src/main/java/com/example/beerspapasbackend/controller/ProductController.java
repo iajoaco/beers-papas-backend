@@ -51,6 +51,8 @@ public class ProductController {
         product.setPrice(request.getPrice());
         product.setPlace(place);
         product.setCategory(category);
+        product.setLatitude(request.getLatitude());
+        product.setLongitude(request.getLongitude());
 
         return ResponseEntity.ok(productRepository.save(product));
     }

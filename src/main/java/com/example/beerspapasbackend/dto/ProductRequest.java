@@ -9,4 +9,6 @@ public class ProductRequest {
     private Double price;
     private Long placeId;
     private Long categoryId;
+    private Double latitude;
+    private Double longitude;
 } 
