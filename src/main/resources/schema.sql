@@ -37,6 +37,8 @@ CREATE TABLE IF NOT EXISTS products (
     price DECIMAL(10,2) NOT NULL,
     average_rating DECIMAL(3,2) DEFAULT 0.00,
     rating_count INT DEFAULT 0,
+    latitude DECIMAL(10,8) NOT NULL,
+    longitude DECIMAL(11,8) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (place_id) REFERENCES places(place_id),
     FOREIGN KEY (product_category_id) REFERENCES product_categories(product_category_id),

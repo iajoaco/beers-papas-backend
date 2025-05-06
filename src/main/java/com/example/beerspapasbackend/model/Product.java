@@ -37,6 +37,12 @@ public class Product {
     @Column(name = "rating_count")
     private Integer ratingCount = 0;
 
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,8)")
+    private Double latitude;
+
+    @Column(nullable = false, columnDefinition = "DECIMAL(11,8)")
+    private Double longitude;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
