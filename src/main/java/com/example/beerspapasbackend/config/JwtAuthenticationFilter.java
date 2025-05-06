@@ -16,7 +16,7 @@ import java.util.Collections;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String SECRET_KEY = "tu_clave_secreta_muy_larga_y_segura_para_firmar_el_token_jwt";
+    private static final String SECRET_KEY = "tu_clave_secreta_muy_segura_y_larga_para_firmar_el_token_123456789";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
+                logger.error("Error al procesar el token JWT", e);
                 SecurityContextHolder.clearContext();
             }
         }

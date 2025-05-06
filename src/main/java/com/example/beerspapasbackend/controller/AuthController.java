@@ -5,50 +5,46 @@ import com.example.beerspapasbackend.dto.LoginResponse;
 import com.example.beerspapasbackend.model.User;
 import com.example.beerspapasbackend.service.UserService;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final String SECRET_KEY = "tu_clave_secreta_muy_segura_y_larga_para_firmar_el_token_123456789";
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final String SECRET_KEY = "tu_clave_secreta_muy_segura_y_larga_para_firmar_el_token_123456789";
+    private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 horas
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.findByUsername(loginRequest.getUsername());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        logger.debug("Intentando login para usuario: {}", loginRequest.getUsername());
         
-        if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Credenciales incorrectas");
+        User user = userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        if (user != null) {
+            String token = generateToken(user);
+            logger.debug("Token generado exitosamente para usuario: {}", user.getUsername());
+            return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getUserId()));
         }
-
-        String token = generateToken(user);
-        
-        LoginResponse response = new LoginResponse(token, user);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.badRequest().body("Invalid username or password");
     }
 
     private String generateToken(User user) {
-        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
-        
+        logger.debug("Generando token para usuario: {}", user.getUsername());
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("userId", user.getUserId())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 horas
-                .signWith(key)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 } 
