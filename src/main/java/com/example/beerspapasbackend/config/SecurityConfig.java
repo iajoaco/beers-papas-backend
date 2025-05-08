@@ -22,6 +22,12 @@ import java.util.Arrays;
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
     
+    private final JwtAuthenticationFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         logger.debug("Configurando SecurityFilterChain");
@@ -33,11 +39,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 logger.debug("Configurando reglas de autorización");
                 auth
-                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/api/auth/**").permitAll()
                     .anyRequest().authenticated();
             })
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }
