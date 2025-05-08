@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#map {
+    height: 100vh;
+    width: 100%;
+}
+
+.search-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#results {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+.product-card {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.product-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.product-card p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.product-card .distance {
+    color: #007bff;
+    font-size: 0.9rem;
+} 

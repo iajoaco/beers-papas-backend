@@ -21,7 +21,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         logger.debug("Configurando SecurityFilterChain");
