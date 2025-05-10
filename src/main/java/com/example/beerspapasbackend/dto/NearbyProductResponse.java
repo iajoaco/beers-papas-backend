@@ -13,4 +13,6 @@ public class NearbyProductResponse {
     private String placeName;
     private String placeAddress;
     private Double distanceInKm;
+    private Double latitude;
+    private Double longitude;
 } 

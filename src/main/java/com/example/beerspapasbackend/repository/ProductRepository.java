@@ -12,11 +12,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByPlacePlaceId(Long placeId);
     List<Product> findByCategoryProductCategoryId(Long categoryId);
     
-    @Query("SELECT p FROM Product p WHERE " +
-           "LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) AND " +
-           "6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * " +
-           "cos(radians(p.longitude) - radians(:longitude)) + " +
-           "sin(radians(:latitude)) * sin(radians(p.latitude))) <= :radiusInKm")
+    @Query(value = """
+        SELECT p.* FROM products p
+        WHERE (:searchTerm IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+        AND (
+            6371 * acos(
+                cos(radians(:latitude)) * 
+                cos(radians(p.latitude)) * 
+                cos(radians(p.longitude) - radians(:longitude)) + 
+                sin(radians(:latitude)) * 
+                sin(radians(p.latitude))
+            )
+        ) <= :radiusInKm
+    """, nativeQuery = true)
     List<Product> findNearbyProducts(
         @Param("searchTerm") String searchTerm,
         @Param("latitude") Double latitude,

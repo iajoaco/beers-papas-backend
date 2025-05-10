@@ -82,12 +82,16 @@ public class ProductController {
     @PostMapping("/nearby")
     public ResponseEntity<List<NearbyProductResponse>> searchNearbyProducts(
             @RequestBody NearbyProductSearchRequest request) {
+        System.out.println("Buscando productos cercanos con parámetros: " + request);
+        
         List<Product> products = productService.findNearbyProducts(
             request.getSearchTerm(),
             request.getLatitude(),
             request.getLongitude(),
             request.getRadiusInKm()
         );
+        
+        System.out.println("Productos encontrados: " + products.size());
 
         List<NearbyProductResponse> response = products.stream()
             .map(product -> {
@@ -100,6 +104,8 @@ public class ProductController {
                 nearbyProduct.setRatingCount(product.getRatingCount());
                 nearbyProduct.setPlaceName(product.getPlace().getName());
                 nearbyProduct.setPlaceAddress(product.getPlace().getAddress());
+                nearbyProduct.setLatitude(product.getLatitude());
+                nearbyProduct.setLongitude(product.getLongitude());
                 
                 // Calcular distancia
                 double distance = calculateDistance(
@@ -114,6 +120,7 @@ public class ProductController {
             })
             .collect(Collectors.toList());
 
+        System.out.println("Respuesta preparada con " + response.size() + " productos");
         return ResponseEntity.ok(response);
     }
 
