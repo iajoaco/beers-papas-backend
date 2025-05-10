@@ -1,21 +1,30 @@
 async function searchNearbyProducts() {
+    console.log('Iniciando búsqueda de productos...');
     const searchTerm = document.getElementById('searchTerm').value;
     const radius = document.getElementById('radius').value;
     const resultsDiv = document.getElementById('results');
 
+    console.log('Término de búsqueda:', searchTerm);
+    console.log('Radio:', radius);
+
     // Obtener la ubicación actual del usuario
     if (!userMarker) {
+        console.log('No se ha obtenido la ubicación del usuario');
         alert('Esperando obtener tu ubicación...');
         return;
     }
 
     const position = userMarker.getPosition();
+    console.log('Posición actual:', position.lat(), position.lng());
+
     const request = {
         searchTerm: searchTerm || null,
         latitude: position.lat(),
         longitude: position.lng(),
         radiusInKm: parseFloat(radius)
     };
+
+    console.log('Enviando petición:', request);
 
     try {
         const response = await fetch('http://localhost:8080/api/products/nearby', {
@@ -26,11 +35,14 @@ async function searchNearbyProducts() {
             body: JSON.stringify(request)
         });
 
+        console.log('Respuesta recibida:', response.status);
+
         if (!response.ok) {
-            throw new Error('Error en la búsqueda');
+            throw new Error(`Error en la búsqueda: ${response.status}`);
         }
 
         const products = await response.json();
+        console.log('Productos encontrados:', products);
         
         // Limpiar marcadores anteriores
         clearProductMarkers();
@@ -45,6 +57,7 @@ async function searchNearbyProducts() {
 
         // Mostrar resultados
         products.forEach(product => {
+            console.log('Procesando producto:', product);
             // Añadir marcador al mapa
             addProductMarker(product);
 
@@ -62,7 +75,7 @@ async function searchNearbyProducts() {
             resultsDiv.appendChild(productCard);
         });
     } catch (error) {
-        console.error('Error:', error);
-        resultsDiv.innerHTML = '<p>Error al buscar productos. Por favor, intenta de nuevo.</p>';
+        console.error('Error en la búsqueda:', error);
+        resultsDiv.innerHTML = `<p>Error al buscar productos: ${error.message}</p>`;
     }
 } 
