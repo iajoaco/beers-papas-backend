@@ -2,12 +2,21 @@ let map;
 let userMarker;
 let productMarkers = [];
 
-function initMap() {
+async function initMap() {
     console.log('Inicializando mapa...');
+    
+    // Asegurarse de que el elemento del mapa existe
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+        console.error('No se encontró el elemento del mapa');
+        return;
+    }
+
     // Inicializar el mapa centrado en Madrid
-    map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(mapElement, {
         center: { lat: 40.4168, lng: -3.7038 },
-        zoom: 13
+        zoom: 13,
+        mapId: 'beers_papas_map' // Añadir un ID único para el mapa
     });
     console.log('Mapa inicializado');
 
@@ -15,7 +24,7 @@ function initMap() {
     if (navigator.geolocation) {
         console.log('Solicitando ubicación del usuario...');
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
                 console.log('Ubicación obtenida:', position.coords);
                 const userLocation = {
                     lat: position.coords.latitude,
@@ -26,21 +35,19 @@ function initMap() {
                 map.setCenter(userLocation);
                 console.log('Mapa centrado en la ubicación del usuario');
 
-                // Crear marcador para la ubicación del usuario
-                userMarker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    title: 'Tu ubicación',
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 10,
-                        fillColor: '#4285F4',
-                        fillOpacity: 1,
-                        strokeColor: '#ffffff',
-                        strokeWeight: 2
-                    }
-                });
-                console.log('Marcador de usuario creado');
+                try {
+                    // Crear marcador para la ubicación del usuario usando AdvancedMarkerElement
+                    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                    userMarker = new AdvancedMarkerElement({
+                        map,
+                        position: userLocation,
+                        title: 'Tu ubicación',
+                        content: createMarkerContent('#4285F4')
+                    });
+                    console.log('Marcador de usuario creado');
+                } catch (error) {
+                    console.error('Error al crear el marcador:', error);
+                }
             },
             (error) => {
                 console.error('Error al obtener la ubicación:', error);
@@ -53,20 +60,25 @@ function initMap() {
     }
 }
 
-function addProductMarker(product) {
+function createMarkerContent(color) {
+    const div = document.createElement('div');
+    div.style.width = '20px';
+    div.style.height = '20px';
+    div.style.backgroundColor = color;
+    div.style.borderRadius = '50%';
+    div.style.border = '2px solid white';
+    return div;
+}
+
+async function addProductMarker(product) {
     console.log('Añadiendo marcador para producto:', product);
-    const marker = new google.maps.Marker({
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    
+    const marker = new AdvancedMarkerElement({
+        map,
         position: { lat: product.latitude, lng: product.longitude },
-        map: map,
         title: product.name,
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: '#FF5252',
-            fillOpacity: 1,
-            strokeColor: '#ffffff',
-            strokeWeight: 2
-        }
+        content: createMarkerContent('#FF5252')
     });
 
     // Crear ventana de información
@@ -94,6 +106,6 @@ function addProductMarker(product) {
 
 function clearProductMarkers() {
     console.log('Limpiando marcadores de productos');
-    productMarkers.forEach(marker => marker.setMap(null));
+    productMarkers.forEach(marker => marker.map = null);
     productMarkers = [];
 } 
