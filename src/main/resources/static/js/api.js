@@ -31,13 +31,14 @@ async function searchNearbyProducts() {
         return;
     }
 
-    const position = userMarker.getPosition();
-    console.log('Posición actual:', position.lat(), position.lng());
+    // Obtener la posición del marcador del usuario
+    const position = userMarker.position;
+    console.log('Posición actual:', position.lat, position.lng);
 
     const request = {
         searchTerm: searchTerm || null,
-        latitude: position.lat(),
-        longitude: position.lng(),
+        latitude: position.lat,
+        longitude: position.lng,
         radiusInKm: parseFloat(radius)
     };
 

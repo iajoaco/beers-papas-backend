@@ -40,11 +40,11 @@ async function initMap() {
                     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
                     userMarker = new AdvancedMarkerElement({
                         map,
-                        position: userLocation,
-                        title: 'Tu ubicación',
+                    position: userLocation,
+                    title: 'Tu ubicación',
                         content: createMarkerContent('#4285F4')
-                    });
-                    console.log('Marcador de usuario creado');
+                });
+                console.log('Marcador de usuario creado');
                 } catch (error) {
                     console.error('Error al crear el marcador:', error);
                 }
