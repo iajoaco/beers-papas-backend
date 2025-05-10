@@ -44,7 +44,7 @@ async function searchNearbyProducts() {
     console.log('Enviando petición:', request);
 
     try {
-        const response = await fetch('http://localhost:8080/api/products/nearby', {
+        const response = await fetch('/api/products/nearby', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -55,7 +55,8 @@ async function searchNearbyProducts() {
         console.log('Respuesta recibida:', response.status);
 
         if (!response.ok) {
-            throw new Error(`Error en la búsqueda: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Error en la búsqueda: ${response.status}`);
         }
 
         const products = await response.json();
