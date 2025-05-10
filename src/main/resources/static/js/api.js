@@ -1,3 +1,20 @@
+// Función para obtener el token JWT del localStorage
+function getAuthToken() {
+    return localStorage.getItem('authToken');
+}
+
+// Función para hacer peticiones autenticadas
+async function fetchWithAuth(url, options = {}) {
+    const token = getAuthToken();
+    if (token) {
+        options.headers = {
+            ...options.headers,
+            'Authorization': `Bearer ${token}`
+        };
+    }
+    return fetch(url, options);
+}
+
 async function searchNearbyProducts() {
     console.log('Iniciando búsqueda de productos...');
     const searchTerm = document.getElementById('searchTerm').value;
