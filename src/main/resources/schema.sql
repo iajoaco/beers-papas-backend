@@ -77,42 +77,35 @@ CREATE INDEX idx_rating_place ON ratings(place_id);
 CREATE INDEX idx_rating_product ON ratings(product_id);
 CREATE INDEX idx_rating_created_at ON ratings(created_at);
 
--- Triggers para actualizar ratings
-DELIMITER //
-
 -- Trigger para actualizar el rating promedio de un producto
 CREATE TRIGGER after_rating_insert_product
 AFTER INSERT ON ratings
 FOR EACH ROW
 BEGIN
-    DECLARE total_ratings DECIMAL(10,2);
-    DECLARE avg_rating DECIMAL(3,2);
-    
-    SELECT COUNT(*), AVG(rating) INTO total_ratings, avg_rating
-    FROM ratings
-    WHERE product_id = NEW.product_id;
-    
     UPDATE products
-    SET rating_count = total_ratings,
-        average_rating = avg_rating
+    SET rating_count = (
+        SELECT COUNT(*)
+        FROM ratings
+        WHERE product_id = NEW.product_id
+    ),
+    average_rating = (
+        SELECT AVG(rating)
+        FROM ratings
+        WHERE product_id = NEW.product_id
+    )
     WHERE product_id = NEW.product_id;
-END//
+END;
 
 -- Trigger para actualizar el contador de ratings del usuario
 CREATE TRIGGER after_rating_insert_user
 AFTER INSERT ON ratings
 FOR EACH ROW
 BEGIN
-    DECLARE total_ratings INT;
-    
-    SELECT COUNT(*)
-    INTO total_ratings
-    FROM ratings
-    WHERE user_id = NEW.user_id;
-    
     UPDATE users
-    SET rating_count = total_ratings
+    SET rating_count = (
+        SELECT COUNT(*)
+        FROM ratings
+        WHERE user_id = NEW.user_id
+    )
     WHERE user_id = NEW.user_id;
-END//
-
-DELIMITER ; 
+END; 
