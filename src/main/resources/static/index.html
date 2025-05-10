@@ -43,10 +43,13 @@
     <script src="js/api.js"></script>
     <!-- Google Maps API -->
     <script>
+        // Configuración de la API key
+        const GOOGLE_MAPS_API_KEY = 'TU_API_KEY_AQUI'; // Reemplaza esto con tu API key real
+
         // Función para cargar Google Maps
         function loadGoogleMaps() {
             const script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap';
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
