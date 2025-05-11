@@ -36,6 +36,58 @@
             </div>
             <div id="map"></div>
         </div>
+
+        <!-- Modal de Registro -->
+        <div id="registerModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" id="closeRegisterModal">&times;</span>
+                <h2>Registro</h2>
+                <form id="registerForm">
+                    <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <button type="submit">Registrarse</button>
+                </form>
+                <div id="registerMessage" class="modal-message"></div>
+            </div>
+        </div>
+
+        <!-- Modal de Login -->
+        <div id="loginModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" id="closeLoginModal">&times;</span>
+                <h2>Iniciar sesión</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <button type="submit">Entrar</button>
+                </form>
+                <div id="loginMessage" class="modal-message"></div>
+            </div>
+        </div>
+
+        <!-- Modal de Valoración -->
+        <div id="rateModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" id="closeRateModal">&times;</span>
+                <h2>Valorar producto</h2>
+                <form id="rateForm">
+                    <input type="text" id="rateProductName" placeholder="Nombre del producto" required>
+                    <input type="text" id="ratePlaceName" placeholder="Nombre del local" required>
+                    <select id="rateScore" required>
+                        <option value="">Puntuación</option>
+                        <option value="1">1 ⭐</option>
+                        <option value="2">2 ⭐</option>
+                        <option value="3">3 ⭐</option>
+                        <option value="4">4 ⭐</option>
+                        <option value="5">5 ⭐</option>
+                    </select>
+                    <textarea id="rateComment" placeholder="Comentario (opcional)"></textarea>
+                    <button type="submit">Enviar valoración</button>
+                </form>
+                <div id="rateMessage" class="modal-message"></div>
+            </div>
+        </div>
     </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>

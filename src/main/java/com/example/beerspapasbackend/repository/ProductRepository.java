@@ -31,4 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Param("longitude") Double longitude,
         @Param("radiusInKm") Double radiusInKm
     );
+
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) AND LOWER(p.place.name) LIKE LOWER(CONCAT('%', :place, '%'))")
+    List<Product> findByNameAndPlaceName(@Param("name") String name, @Param("place") String place);
 } 

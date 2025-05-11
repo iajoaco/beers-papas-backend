@@ -221,4 +221,95 @@ body {
 
 .product-card p {
     margin: 5px 0;
+}
+
+/* Modales */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: opacity 0.3s;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.2);
+    min-width: 320px;
+    max-width: 90vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafafa;
+    transition: border 0.2s;
+}
+
+.modal-content input:focus {
+    border: 1.5px solid #ffd700;
+    outline: none;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background: #ffd700;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-content button:hover {
+    background: #ffed4a;
+}
+
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #222;
+}
+
+.modal-message {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #d32f2f;
+    text-align: center;
 } 

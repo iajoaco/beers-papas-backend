@@ -124,6 +124,17 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Product>> getProductsByNameAndPlace(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String place) {
+        if (name != null && place != null) {
+            return ResponseEntity.ok(productRepository.findByNameAndPlaceName(name, place));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Radio de la Tierra en kilómetros
 
