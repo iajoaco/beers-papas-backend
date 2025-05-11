@@ -50,6 +50,34 @@ public class RatingService {
         rating.setRating(ratingRequest.getRating());
         rating.setComment(ratingRequest.getComment());
 
-        return ratingRepository.save(rating);
+        Rating savedRating = ratingRepository.save(rating);
+
+        // --- Actualizar producto ---
+        Double avgProduct = ratingRepository.findAll().stream()
+            .filter(r -> r.getProduct().getProductId().equals(product.getProductId()))
+            .mapToDouble(Rating::getRating).average().orElse(0.0);
+        long countProduct = ratingRepository.findAll().stream()
+            .filter(r -> r.getProduct().getProductId().equals(product.getProductId())).count();
+        product.setAverageRating(avgProduct);
+        product.setRatingCount((int) countProduct);
+        productRepository.save(product);
+
+        // --- Actualizar local (place) ---
+        Double avgPlace = ratingRepository.findAll().stream()
+            .filter(r -> r.getPlace().getPlaceId().equals(place.getPlaceId()))
+            .mapToDouble(Rating::getRating).average().orElse(0.0);
+        long countPlace = ratingRepository.findAll().stream()
+            .filter(r -> r.getPlace().getPlaceId().equals(place.getPlaceId())).count();
+        place.setAverageRating(avgPlace);
+        place.setRatingCount((int) countPlace);
+        placeRepository.save(place);
+
+        // --- Actualizar usuario ---
+        long countUser = ratingRepository.findAll().stream()
+            .filter(r -> r.getUser().getUserId().equals(user.getUserId())).count();
+        user.setRatingCount((int) countUser);
+        userRepository.save(user);
+
+        return savedRating;
     }
 } 
