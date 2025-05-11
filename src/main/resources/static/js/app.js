@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Buscar el producto por nombre y local
-        fetch(`/api/products?name=${encodeURIComponent(productName)}&place=${encodeURIComponent(placeName)}`, {
+        fetch(`/api/products/search?name=${encodeURIComponent(productName)}&place=${encodeURIComponent(placeName)}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         })
         .then(res => res.json())

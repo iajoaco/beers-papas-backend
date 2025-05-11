@@ -124,7 +124,7 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<List<Product>> getProductsByNameAndPlace(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String place) {
