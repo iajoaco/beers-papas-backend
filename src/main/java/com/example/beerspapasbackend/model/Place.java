@@ -42,6 +42,9 @@ public class Place {
     @Column(name = "average_rating", columnDefinition = "DECIMAL(3,2)")
     private Double averageRating = 0.0;
 
+    @Column(name = "rating_count")
+    private Integer ratingCount = 0;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
