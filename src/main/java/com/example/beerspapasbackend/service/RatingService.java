@@ -43,10 +43,15 @@ public class RatingService {
         // Obtener el lugar del producto
         Place place = product.getPlace();
 
-        Rating rating = new Rating();
-        rating.setUser(user);
-        rating.setPlace(place);
-        rating.setProduct(product);
+        // Buscar si ya existe una valoración de este usuario para este producto
+        Rating rating = ratingRepository.findByUserAndProduct(user, product)
+                .orElseGet(() -> {
+                    Rating r = new Rating();
+                    r.setUser(user);
+                    r.setPlace(place);
+                    r.setProduct(product);
+                    return r;
+                });
         rating.setRating(ratingRequest.getRating());
         rating.setComment(ratingRequest.getComment());
 
@@ -70,12 +75,26 @@ public class RatingService {
             .filter(r -> r.getPlace().getPlaceId().equals(place.getPlaceId())).count();
         place.setAverageRating(avgPlace);
         place.setRatingCount((int) countPlace);
+
+        // rated_products_count: productos distintos valorados en este local
+        long ratedProducts = ratingRepository.findAll().stream()
+            .filter(r -> r.getPlace().getPlaceId().equals(place.getPlaceId()))
+            .map(r -> r.getProduct().getProductId())
+            .distinct().count();
+        place.setRatedProductsCount((int) ratedProducts);
         placeRepository.save(place);
 
         // --- Actualizar usuario ---
         long countUser = ratingRepository.findAll().stream()
             .filter(r -> r.getUser().getUserId().equals(user.getUserId())).count();
         user.setRatingCount((int) countUser);
+
+        // rated_places_count: lugares distintos valorados por el usuario
+        long ratedPlaces = ratingRepository.findAll().stream()
+            .filter(r -> r.getUser().getUserId().equals(user.getUserId()))
+            .map(r -> r.getPlace().getPlaceId())
+            .distinct().count();
+        user.setRatedPlacesCount((int) ratedPlaces);
         userRepository.save(user);
 
         return savedRating;

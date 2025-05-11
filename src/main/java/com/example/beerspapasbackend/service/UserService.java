@@ -55,6 +55,8 @@ public class UserService {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (passwordEncoder.matches(password, user.getPassword())) {
+                user.setLastLogin(java.time.LocalDateTime.now());
+                userRepository.save(user);
                 return user;
             }
         }
