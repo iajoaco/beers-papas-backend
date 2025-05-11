@@ -5,66 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beers & Papas</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar para búsqueda y filtros -->
-            <div class="col-md-4 sidebar">
-                <h2 class="mt-3 mb-4">Beers & Papas</h2>
-                <div class="search-form">
-                    <div class="mb-3">
-                        <label for="searchTerm" class="form-label">Buscar</label>
-                        <input type="text" class="form-control" id="searchTerm" placeholder="Nombre del producto...">
-                    </div>
-                    <div class="mb-3">
-                        <label for="radius" class="form-label">Radio de búsqueda (km)</label>
-                        <input type="number" class="form-control" id="radius" value="5" min="1" max="50">
-                    </div>
-                    <button id="searchButton" class="btn btn-primary w-100">Buscar</button>
-                </div>
-                <div id="results" class="mt-4">
-                    <!-- Los resultados se mostrarán aquí -->
-                </div>
+    <div class="main-container">
+        <nav class="navbar">
+            <div class="logo">Beers & Papas</div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <!-- Mapa -->
-            <div class="col-md-8 p-0">
-                <div id="map"></div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" id="registerLink">Registrarse</a></li>
+                <li><a href="#" id="rateLink">Valorar</a></li>
+                <li><a href="#" id="searchLink">Tomar algo</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-section">
+            <h1>Bienvenido a Beers & Papas</h1>
+            <p>Descubre los mejores bares y sus productos cerca de ti</p>
+        </div>
+
+        <div id="map-container" class="hidden">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <input type="number" id="radiusInput" placeholder="Radio (km)" value="1" min="0.1" max="10" step="0.1">
+                <button id="searchButton">Buscar</button>
             </div>
+            <div id="map"></div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Nuestro JavaScript -->
-    <script src="js/map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
     <script src="js/api.js"></script>
-    <!-- Google Maps API -->
-    <script>
-        // Configuración de la API key
-        const GOOGLE_MAPS_API_KEY = 'AIzaSyBZkmnceSnVhsdCaPjVZzoGuYi_GLBG2_A';
-
-        // Función para cargar Google Maps
-        function loadGoogleMaps() {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap&libraries=marker&v=beta`;
-            script.async = true;
-            script.defer = true;
-            document.head.appendChild(script);
-        }
-
-        // Cargar Google Maps cuando el documento esté listo
-        document.addEventListener('DOMContentLoaded', function() {
-            loadGoogleMaps();
-            
-            // Añadir evento al botón de búsqueda
-            document.getElementById('searchButton').addEventListener('click', function() {
-                console.log('Botón de búsqueda clickeado');
-                searchNearbyProducts();
-            });
-        });
-    </script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html> 

@@ -1,111 +1,125 @@
 let map;
+let markers = [];
 let userMarker;
-let productMarkers = [];
+let userLocation = null;
 
-async function initMap() {
-    console.log('Inicializando mapa...');
-    
-    // Asegurarse de que el elemento del mapa existe
-    const mapElement = document.getElementById('map');
-    if (!mapElement) {
-        console.error('No se encontró el elemento del mapa');
-        return;
-    }
-
+function initMap() {
     // Inicializar el mapa centrado en Madrid
-    map = new google.maps.Map(mapElement, {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 40.4168, lng: -3.7038 },
         zoom: 13,
-        mapId: 'beers_papas_map' // Añadir un ID único para el mapa
+        styles: [
+            {
+                "featureType": "poi",
+                "elementType": "labels",
+                "stylers": [{ "visibility": "off" }]
+            }
+        ]
     });
-    console.log('Mapa inicializado');
 
     // Obtener la ubicación del usuario
     if (navigator.geolocation) {
-        console.log('Solicitando ubicación del usuario...');
         navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                console.log('Ubicación obtenida:', position.coords);
-                const userLocation = {
+            (position) => {
+                userLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
 
                 // Centrar el mapa en la ubicación del usuario
                 map.setCenter(userLocation);
-                console.log('Mapa centrado en la ubicación del usuario');
 
-                try {
-                    // Crear marcador para la ubicación del usuario usando AdvancedMarkerElement
-                    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-                    userMarker = new AdvancedMarkerElement({
-                        map,
+                // Crear marcador para la ubicación del usuario
+                userMarker = new google.maps.Marker({
                     position: userLocation,
-                    title: 'Tu ubicación',
-                        content: createMarkerContent('#4285F4')
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: "#4285F4",
+                        fillOpacity: 1,
+                        strokeColor: "#ffffff",
+                        strokeWeight: 2,
+                    },
+                    title: "Tu ubicación"
                 });
-                console.log('Marcador de usuario creado');
-                } catch (error) {
-                    console.error('Error al crear el marcador:', error);
-                }
+
+                // Buscar productos cercanos automáticamente
+                searchNearbyProducts();
             },
             (error) => {
-                console.error('Error al obtener la ubicación:', error);
-                alert('No se pudo obtener tu ubicación. Por favor, asegúrate de que la geolocalización está activada.');
+                console.error("Error al obtener la ubicación:", error);
+                alert("No se pudo obtener tu ubicación. Por favor, asegúrate de que la geolocalización está activada.");
             }
         );
     } else {
-        console.error('Geolocalización no soportada');
-        alert('Tu navegador no soporta geolocalización.');
+        alert("Tu navegador no soporta geolocalización.");
     }
 }
 
-function createMarkerContent(color) {
-    const div = document.createElement('div');
-    div.style.width = '20px';
-    div.style.height = '20px';
-    div.style.backgroundColor = color;
-    div.style.borderRadius = '50%';
-    div.style.border = '2px solid white';
-    return div;
+function searchNearbyProducts(searchTerm = '', radius = 1) {
+    if (!userLocation) {
+        alert("Esperando obtener tu ubicación...");
+        return;
+    }
+
+    // Limpiar marcadores anteriores
+    clearMarkers();
+
+    // Realizar la búsqueda
+    fetch('/api/products/nearby', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            searchTerm: searchTerm,
+            latitude: userLocation.lat,
+            longitude: userLocation.lng,
+            radiusInKm: parseFloat(radius)
+        })
+    })
+    .then(response => response.json())
+    .then(products => {
+        products.forEach(product => {
+            const position = {
+                lat: product.latitude,
+                lng: product.longitude
+            };
+
+            const marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: product.name
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div class="info-window">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <p>Precio: ${product.price}€</p>
+                        <p>Lugar: ${product.placeName}</p>
+                        <p>Dirección: ${product.placeAddress}</p>
+                        <p>Distancia: ${product.distanceInKm.toFixed(2)} km</p>
+                    </div>
+                `
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+
+            markers.push(marker);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al buscar productos cercanos');
+    });
 }
 
-async function addProductMarker(product) {
-    console.log('Añadiendo marcador para producto:', product);
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    
-    const marker = new AdvancedMarkerElement({
-        map,
-        position: { lat: product.latitude, lng: product.longitude },
-        title: product.name,
-        content: createMarkerContent('#FF5252')
-    });
-
-    // Crear ventana de información
-    const infoWindow = new google.maps.InfoWindow({
-        content: `
-            <div>
-                <h3>${product.name}</h3>
-                <p>${product.description || ''}</p>
-                <p>Precio: ${product.price}€</p>
-                <p>Lugar: ${product.placeName}</p>
-                <p>Distancia: ${product.distanceInKm.toFixed(2)} km</p>
-            </div>
-        `
-    });
-
-    // Mostrar ventana de información al hacer clic en el marcador
-    marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-    });
-
-    productMarkers.push(marker);
-    console.log('Marcador añadido correctamente');
-    return marker;
-}
-
-function clearProductMarkers() {
-    console.log('Limpiando marcadores de productos');
-    productMarkers.forEach(marker => marker.map = null);
-    productMarkers = [];
+function clearMarkers() {
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
 } 
