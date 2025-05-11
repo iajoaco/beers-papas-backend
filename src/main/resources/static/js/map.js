@@ -122,4 +122,6 @@ function searchNearbyProducts(searchTerm = '', radius = 1) {
 function clearMarkers() {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
-} 
+}
+
+window.initMap = initMap; 
