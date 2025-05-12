@@ -11,12 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerPage = document.getElementById('registerPage');
     const loginPage = document.getElementById('loginPage');
     const heroSection = document.querySelector('.hero-section');
-
-    // Modales
-    const registerModal = document.getElementById('registerModal');
-    const loginModal = document.getElementById('loginModal');
-    const closeRegisterModal = document.getElementById('closeRegisterModal');
-    const closeLoginModal = document.getElementById('closeLoginModal');
+    const rateModal = document.getElementById('rateModal');
 
     // Toggle del menú móvil
     menuToggle.addEventListener('click', function() {
@@ -48,9 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         loginPage.classList.add('hidden');
         heroSection.classList.add('hidden');
         mapContainer.classList.add('hidden');
-        registerModal.classList.add('hidden');
-        loginModal.classList.add('hidden');
         rateModal.classList.add('hidden');
+        
         // Muestra la que toca
         if (page === 'register') registerPage.classList.remove('hidden');
         else if (page === 'login') loginPage.classList.remove('hidden');
@@ -88,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Mostrar login si se requiere para buscar
+    // Mostrar mapa
     searchLink.addEventListener('click', function(e) {
         e.preventDefault();
         showPage('map');
@@ -97,22 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Cerrar modales al pulsar la X
-    closeRegisterModal.addEventListener('click', function() {
-        registerModal.classList.add('hidden');
-    });
-    closeLoginModal.addEventListener('click', function() {
-        loginModal.classList.add('hidden');
+    // Cerrar modal de valoración
+    const closeRateModal = document.getElementById('closeRateModal');
+    closeRateModal.addEventListener('click', function() {
+        rateModal.classList.add('hidden');
     });
 
-    // Cerrar modales al hacer clic fuera del contenido
+    // Cerrar modal al hacer clic fuera
     window.addEventListener('click', function(event) {
-        if (event.target === registerModal) {
-            registerModal.classList.add('hidden');
-        }
-        if (event.target === loginModal) {
-            loginModal.classList.add('hidden');
-        }
         if (event.target === rateModal) {
             rateModal.classList.add('hidden');
         }
@@ -201,8 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- Valoración ---
-    const rateModal = document.getElementById('rateModal');
-    const closeRateModal = document.getElementById('closeRateModal');
     const rateForm = document.getElementById('rateForm');
     const rateMessage = document.getElementById('rateMessage');
 

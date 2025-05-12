@@ -68,7 +68,7 @@ body {
 /* Hero section styles */
 .hero-section {
     height: 100vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/portada_app.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/portada_app.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -321,7 +321,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/cervezas-tapas.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/portada_app.jpg');
     background-size: cover;
     background-position: center;
     z-index: 3000;
@@ -358,4 +358,18 @@ body {
 }
 #homeLink:hover {
     color: #fff;
+}
+
+/* Fondo para login */
+.login-page {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/portada_app.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fondo para registro */
+.register-page {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/first_time.jpg');
+    background-size: cover;
+    background-position: center;
 } 
