@@ -321,7 +321,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./img/portada_app.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/portada_app.jpg');
     background-size: cover;
     background-position: center;
     z-index: 3000;
@@ -362,14 +362,14 @@ body {
 
 /* Fondo para login */
 .login-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./img/portada_app.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/portada_app.jpg');
     background-size: cover;
     background-position: center;
 }
 
 /* Fondo para registro */
 .register-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('.s/img/first_time.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/first_time.jpg');
     background-size: cover;
     background-position: center;
 } 

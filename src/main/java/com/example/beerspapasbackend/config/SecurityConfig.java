@@ -39,7 +39,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 logger.debug("Configurando reglas de autorización");
                 auth
-                    .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/api/auth/**", "/api/products/nearby", 
+                    .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/img/**", "/api/auth/**", "/api/products/nearby", 
                                    "/api/users/register", "/favicon.ico", "/error").permitAll()
                     .anyRequest().authenticated();
             })
