@@ -17,9 +17,11 @@
                 <span></span>
             </div>
             <ul class="nav-menu" id="navMenu">
+                <li><a href="#" id="homeLink">Inicio</a></li>
                 <li><a href="#" id="registerLink">Registrarse</a></li>
                 <li><a href="#" id="rateLink">Valorar</a></li>
                 <li><a href="#" id="searchLink">Tomar algo</a></li>
+                <li><a href="#" id="logoutLink" style="display:none;">Cerrar sesión</a></li>
             </ul>
         </nav>
 
@@ -37,10 +39,9 @@
             <div id="map"></div>
         </div>
 
-        <!-- Modal de Registro -->
-        <div id="registerModal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close" id="closeRegisterModal">&times;</span>
+        <!-- Pantalla de Registro (página completa) -->
+        <section id="registerPage" class="page hidden">
+            <div class="page-content">
                 <h2>Registro</h2>
                 <form id="registerForm">
                     <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
@@ -50,12 +51,11 @@
                 </form>
                 <div id="registerMessage" class="modal-message"></div>
             </div>
-        </div>
+        </section>
 
-        <!-- Modal de Login -->
-        <div id="loginModal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close" id="closeLoginModal">&times;</span>
+        <!-- Pantalla de Login (página completa) -->
+        <section id="loginPage" class="page hidden">
+            <div class="page-content">
                 <h2>Iniciar sesión</h2>
                 <form id="loginForm">
                     <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
@@ -64,7 +64,7 @@
                 </form>
                 <div id="loginMessage" class="modal-message"></div>
             </div>
-        </div>
+        </section>
 
         <!-- Modal de Valoración -->
         <div id="rateModal" class="modal hidden">

@@ -312,4 +312,50 @@ body {
     font-size: 0.95rem;
     color: #d32f2f;
     text-align: center;
+}
+
+/* Páginas completas (login, registro) */
+.page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/cervezas-tapas.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.page.hidden {
+    display: none;
+}
+.page-content {
+    background: #fff;
+    padding: 2.5rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.2);
+    min-width: 320px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ajuste para el menú */
+#logoutLink {
+    color: #ffd700;
+    font-weight: 600;
+}
+#logoutLink:hover {
+    color: #fff;
+}
+#homeLink {
+    color: #ffd700;
+    font-weight: 600;
+}
+#homeLink:hover {
+    color: #fff;
 } 

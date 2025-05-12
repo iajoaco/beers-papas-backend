@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const rateLink = document.getElementById('rateLink');
     const searchLink = document.getElementById('searchLink');
     const mapContainer = document.getElementById('map-container');
+    const homeLink = document.getElementById('homeLink');
+    const logoutLink = document.getElementById('logoutLink');
+    const registerPage = document.getElementById('registerPage');
+    const loginPage = document.getElementById('loginPage');
+    const heroSection = document.querySelector('.hero-section');
 
     // Modales
     const registerModal = document.getElementById('registerModal');
@@ -26,19 +31,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Abrir modal de registro
-    registerLink.addEventListener('click', function(e) {
+    // Mostrar/ocultar logout según login
+    function updateAuthUI() {
+        if (isLoggedIn()) {
+            logoutLink.style.display = '';
+        } else {
+            logoutLink.style.display = 'none';
+        }
+    }
+    updateAuthUI();
+
+    // Navegación entre páginas
+    function showPage(page) {
+        // Oculta todas las secciones principales
+        registerPage.classList.add('hidden');
+        loginPage.classList.add('hidden');
+        heroSection.classList.add('hidden');
+        mapContainer.classList.add('hidden');
+        registerModal.classList.add('hidden');
+        loginModal.classList.add('hidden');
+        rateModal.classList.add('hidden');
+        // Muestra la que toca
+        if (page === 'register') registerPage.classList.remove('hidden');
+        else if (page === 'login') loginPage.classList.remove('hidden');
+        else if (page === 'map') mapContainer.classList.remove('hidden');
+        else if (page === 'hero') heroSection.classList.remove('hidden');
+    }
+
+    // Botón Inicio
+    homeLink.addEventListener('click', function(e) {
         e.preventDefault();
-        registerModal.classList.remove('hidden');
+        showPage('hero');
     });
 
-    // Abrir modal de login desde 'Valorar'
+    // Botón logout
+    logoutLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('jwtToken');
+        updateAuthUI();
+        showPage('hero');
+    });
+
+    // Mostrar página de registro
+    registerLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showPage('register');
+    });
+
+    // Mostrar página de login
     rateLink.addEventListener('click', function(e) {
         e.preventDefault();
         if (!isLoggedIn()) {
-            loginModal.classList.remove('hidden');
+            showPage('login');
         } else {
             rateModal.classList.remove('hidden');
+        }
+    });
+
+    // Mostrar login si se requiere para buscar
+    searchLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showPage('map');
+        if (typeof map === 'undefined') {
+            initMap();
         }
     });
 
@@ -60,15 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (event.target === rateModal) {
             rateModal.classList.add('hidden');
-        }
-    });
-
-    // Navegación para "Tomar algo"
-    searchLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        mapContainer.classList.remove('hidden');
-        if (typeof map === 'undefined') {
-            initMap();
         }
     });
 
@@ -108,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
             registerMessage.style.color = '#388e3c';
             registerMessage.textContent = '¡Registro exitoso! Ahora puedes iniciar sesión.';
             setTimeout(() => {
-                registerModal.classList.add('hidden');
+                showPage('login');
                 registerForm.reset();
                 registerMessage.textContent = '';
             }, 1500);
@@ -142,9 +188,10 @@ document.addEventListener('DOMContentLoaded', function() {
             loginMessage.style.color = '#388e3c';
             loginMessage.textContent = '¡Login exitoso!';
             setTimeout(() => {
-                loginModal.classList.add('hidden');
+                showPage('hero');
                 loginForm.reset();
                 loginMessage.textContent = '';
+                updateAuthUI();
             }, 1000);
         })
         .catch(err => {
@@ -218,4 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rateMessage.textContent = 'Error: ' + (err.message || 'No se pudo enviar la valoración');
         });
     });
+
+    // Al cargar, mostrar la pantalla principal
+    showPage('hero');
 }); 
