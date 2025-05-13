@@ -243,7 +243,7 @@ body {
 }
 
 .modal-content {
-    background: rgba(40, 40, 40, 0.7);
+    background: rgba(40, 40, 40, 0.4);
     color: #fff;
     padding: 2rem 2.5rem;
     border-radius: 12px;
@@ -261,19 +261,22 @@ body {
     color: #ffd700;
 }
 
-.modal-content input {
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
     width: 100%;
     padding: 0.7rem 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #ddd;
+    border: 1.5px solid #ffd700;
     border-radius: 6px;
     font-size: 1rem;
-    background: #fafafa;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    backdrop-filter: blur(2px);
     transition: border 0.2s;
 }
 
 .modal-content input:focus {
-    border: 1.5px solid #ffd700;
     outline: none;
 }
 
@@ -334,7 +337,7 @@ body {
     display: none;
 }
 .page-content {
-    background: rgba(40, 40, 40, 0.7);
+    background: rgba(40, 40, 40, 0.4);
     color: #fff;
     padding: 2.5rem 2.5rem;
     border-radius: 12px;
@@ -381,4 +384,13 @@ body {
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo_4.jpg');
     background-size: cover;
     background-position: center;
+}
+
+/* Inputs translúcidos */
+.modal-content input::placeholder,
+.modal-content textarea::placeholder,
+.page-content input::placeholder,
+.page-content textarea::placeholder {
+    color: #eee;
+    opacity: 1;
 } 
