@@ -367,21 +367,21 @@ body {
 
 /* Fondo para login */
 .login-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/portada_app.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/login.jpg');
     background-size: cover;
     background-position: center;
 }
 
 /* Fondo para registro */
 .register-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/foto_registro.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cerveza_calamares.jpg');
     background-size: cover;
     background-position: center;
 }
 
 /* Fondo para el modal de valoración */
 .rate-modal-bg {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo_4_mejorado.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo.jpg');
     background-size: cover;
     background-position: center;
 }
