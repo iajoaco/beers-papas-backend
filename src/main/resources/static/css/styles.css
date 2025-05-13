@@ -381,7 +381,7 @@ body {
 
 /* Fondo para el modal de valoración */
 .rate-modal-bg {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo_4.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo_4_mejorado.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -391,6 +391,6 @@ body {
 .modal-content textarea::placeholder,
 .page-content input::placeholder,
 .page-content textarea::placeholder {
-    color: #eee;
+    color: #111;
     opacity: 1;
 } 
