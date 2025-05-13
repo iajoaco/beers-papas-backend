@@ -258,6 +258,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Cruz para cerrar la pantalla de login
+    const closeLoginPage = document.getElementById('closeLoginPage');
+    if (closeLoginPage) {
+        closeLoginPage.addEventListener('click', function() {
+            showPage('hero');
+        });
+    }
+
     // Al cargar, mostrar la pantalla principal
     showPage('hero');
 }); 
