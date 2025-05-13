@@ -250,6 +250,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Cruz para cerrar la pantalla de registro
+    const closeRegisterPage = document.getElementById('closeRegisterPage');
+    if (closeRegisterPage) {
+        closeRegisterPage.addEventListener('click', function() {
+            showPage('hero');
+        });
+    }
+
     // Al cargar, mostrar la pantalla principal
     showPage('hero');
 }); 
