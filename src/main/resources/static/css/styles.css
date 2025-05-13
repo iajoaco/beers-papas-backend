@@ -243,7 +243,8 @@ body {
 }
 
 .modal-content {
-    background: #fff;
+    background: rgba(40, 40, 40, 0.7);
+    color: #fff;
     padding: 2rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 32px rgba(0,0,0,0.2);
@@ -257,7 +258,7 @@ body {
 
 .modal-content h2 {
     margin-bottom: 1.5rem;
-    color: #222;
+    color: #ffd700;
 }
 
 .modal-content input {
@@ -333,7 +334,8 @@ body {
     display: none;
 }
 .page-content {
-    background: #fff;
+    background: rgba(40, 40, 40, 0.7);
+    color: #fff;
     padding: 2.5rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 32px rgba(0,0,0,0.2);
@@ -369,7 +371,14 @@ body {
 
 /* Fondo para registro */
 .register-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/first_time.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/foto_registro.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Fondo para el modal de valoración */
+.rate-modal-bg {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo_4.jpg');
     background-size: cover;
     background-position: center;
 } 
