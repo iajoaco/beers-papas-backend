@@ -266,20 +266,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Mostrar estrellas dinámicamente al seleccionar puntuación
-    const rateScore = document.getElementById('rateScore');
-    const starPreview = document.getElementById('starPreview');
-    if (rateScore && starPreview) {
-        rateScore.addEventListener('change', function() {
-            const val = parseInt(rateScore.value);
-            if (val >= 1 && val <= 5) {
-                starPreview.textContent = '★'.repeat(val) + '☆'.repeat(5 - val);
-            } else {
-                starPreview.textContent = '';
-            }
-        });
-    }
-
     // Al cargar, mostrar la pantalla principal
     showPage('hero');
 }); 
