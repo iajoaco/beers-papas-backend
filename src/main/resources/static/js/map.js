@@ -45,7 +45,7 @@ function initMap() {
                 });
 
                 // Buscar productos cercanos automáticamente
-                searchNearbyProducts();
+                performSearch();
             },
             (error) => {
                 console.error("Error al obtener la ubicación:", error);
@@ -57,7 +57,7 @@ function initMap() {
     }
 }
 
-function searchNearbyProducts(searchTerm = '', radius = 1) {
+function performSearch() {
     if (!userLocation) {
         alert("Esperando obtener tu ubicación...");
         return;
