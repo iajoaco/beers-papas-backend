@@ -15,14 +15,37 @@ async function fetchWithAuth(url, options = {}) {
     return fetch(url, options);
 }
 
+async function loadCategories() {
+    try {
+        const response = await fetch('/api/products/categories');
+        const categories = await response.json();
+        const categorySelect = document.getElementById('categoryInput');
+        
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.productCategoryId;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error al cargar categorías:', error);
+    }
+}
+
 async function searchNearbyProducts() {
     console.log('Iniciando búsqueda de productos...');
     const searchTerm = document.getElementById('searchTerm').value;
     const radius = document.getElementById('radius').value;
+    const minPrice = document.getElementById('minPriceInput').value;
+    const maxPrice = document.getElementById('maxPriceInput').value;
+    const categoryId = document.getElementById('categoryInput').value;
     const resultsDiv = document.getElementById('results');
 
     console.log('Término de búsqueda:', searchTerm);
     console.log('Radio:', radius);
+    console.log('Precio mínimo:', minPrice);
+    console.log('Precio máximo:', maxPrice);
+    console.log('Categoría:', categoryId);
 
     // Obtener la ubicación actual del usuario
     if (!userMarker) {
@@ -39,7 +62,10 @@ async function searchNearbyProducts() {
         searchTerm: searchTerm || null,
         latitude: position.lat,
         longitude: position.lng,
-        radiusInKm: parseFloat(radius)
+        radiusInKm: parseFloat(radius),
+        minPrice: minPrice ? parseFloat(minPrice) : null,
+        maxPrice: maxPrice ? parseFloat(maxPrice) : null,
+        categoryId: categoryId ? parseInt(categoryId) : null
     };
 
     console.log('Enviando petición:', request);
@@ -87,6 +113,7 @@ async function searchNearbyProducts() {
                 <h3>${product.name}</h3>
                 <p>${product.description || ''}</p>
                 <p class="price">${product.price}€</p>
+                <p class="category">${product.categoryName}</p>
                 <p>${product.placeName}</p>
                 <p>${product.placeAddress}</p>
                 <p class="distance">A ${product.distanceInKm.toFixed(2)} km</p>
@@ -97,4 +124,7 @@ async function searchNearbyProducts() {
         console.error('Error en la búsqueda:', error);
         resultsDiv.innerHTML = `<p>Error al buscar productos: ${error.message}</p>`;
     }
-} 
+}
+
+// Cargar categorías cuando se carga la página
+document.addEventListener('DOMContentLoaded', loadCategories); 

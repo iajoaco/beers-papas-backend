@@ -15,4 +15,5 @@ public class NearbyProductResponse {
     private Double distanceInKm;
     private Double latitude;
     private Double longitude;
+    private String categoryName;
 } 

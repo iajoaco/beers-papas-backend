@@ -15,6 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = """
         SELECT p.* FROM products p
         WHERE (:searchTerm IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
+        AND (:categoryId IS NULL OR p.product_category_id = :categoryId)
+        AND (:minPrice IS NULL OR p.price >= :minPrice)
+        AND (:maxPrice IS NULL OR p.price <= :maxPrice)
         AND (
             6371 * acos(
                 cos(radians(:latitude)) * 
@@ -29,7 +32,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Param("searchTerm") String searchTerm,
         @Param("latitude") Double latitude,
         @Param("longitude") Double longitude,
-        @Param("radiusInKm") Double radiusInKm
+        @Param("radiusInKm") Double radiusInKm,
+        @Param("minPrice") Double minPrice,
+        @Param("maxPrice") Double maxPrice,
+        @Param("categoryId") Long categoryId
     );
 
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) AND LOWER(p.place.name) LIKE LOWER(CONCAT('%', :place, '%'))")

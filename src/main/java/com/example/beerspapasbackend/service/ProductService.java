@@ -30,7 +30,7 @@ public class ProductService {
         return productRepository.findByCategoryProductCategoryId(categoryId);
     }
 
-    public List<Product> findNearbyProducts(String searchTerm, Double latitude, Double longitude, Double radiusInKm) {
-        return productRepository.findNearbyProducts(searchTerm, latitude, longitude, radiusInKm);
+    public List<Product> findNearbyProducts(String searchTerm, Double latitude, Double longitude, Double radiusInKm, Double minPrice, Double maxPrice, Long categoryId) {
+        return productRepository.findNearbyProducts(searchTerm, latitude, longitude, radiusInKm, minPrice, maxPrice, categoryId);
     }
 } 

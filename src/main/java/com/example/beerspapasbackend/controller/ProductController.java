@@ -88,7 +88,10 @@ public class ProductController {
             request.getSearchTerm(),
             request.getLatitude(),
             request.getLongitude(),
-            request.getRadiusInKm()
+            request.getRadiusInKm(),
+            request.getMinPrice(),
+            request.getMaxPrice(),
+            request.getCategoryId()
         );
         
         System.out.println("Productos encontrados: " + products.size());
@@ -106,6 +109,7 @@ public class ProductController {
                 nearbyProduct.setPlaceAddress(product.getPlace().getAddress());
                 nearbyProduct.setLatitude(product.getLatitude());
                 nearbyProduct.setLongitude(product.getLongitude());
+                nearbyProduct.setCategoryName(product.getCategory().getName());
                 
                 // Calcular distancia
                 double distance = calculateDistance(
@@ -133,6 +137,11 @@ public class ProductController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<ProductCategory>> getAllCategories() {
+        return ResponseEntity.ok(categoryRepository.findAll());
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
