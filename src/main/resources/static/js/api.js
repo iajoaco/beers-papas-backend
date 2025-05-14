@@ -75,6 +75,7 @@ async function searchNearbyProducts() {
     const minPriceValue = minPrice.trim() !== '' ? parseFloat(minPrice) : null;
     const maxPriceValue = maxPrice.trim() !== '' ? parseFloat(maxPrice) : null;
     const categoryIdValue = categoryId && categoryId !== '' ? parseInt(categoryId) : null;
+    const radiusValue = parseFloat(radius);
 
     // Validar que el precio mínimo no sea mayor que el máximo
     if (minPriceValue !== null && maxPriceValue !== null && minPriceValue > maxPriceValue) {
@@ -86,7 +87,7 @@ async function searchNearbyProducts() {
         searchTerm: searchTerm.trim() !== '' ? searchTerm : null,
         latitude: position.lat,
         longitude: position.lng,
-        radiusInKm: parseFloat(radius),
+        radiusInKm: radiusValue,
         minPrice: minPriceValue,
         maxPrice: maxPriceValue,
         categoryId: categoryIdValue
