@@ -1,7 +1,10 @@
 let map;
 let markers = [];
 let userMarker;
-let userLocation = null;
+window.userLocation = null;
+
+// Evento personalizado para notificar cuando la ubicación esté disponible
+const locationReadyEvent = new CustomEvent('locationReady');
 
 // Asegurarnos de que initMap esté disponible globalmente
 window.initMap = function() {
@@ -22,17 +25,17 @@ window.initMap = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                userLocation = {
+                window.userLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
 
                 // Centrar el mapa en la ubicación del usuario
-                map.setCenter(userLocation);
+                map.setCenter(window.userLocation);
 
                 // Crear marcador para la ubicación del usuario
                 userMarker = new google.maps.Marker({
-                    position: userLocation,
+                    position: window.userLocation,
                     map: map,
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
@@ -44,6 +47,9 @@ window.initMap = function() {
                     },
                     title: "Tu ubicación"
                 });
+
+                // Disparar evento cuando la ubicación esté lista
+                document.dispatchEvent(locationReadyEvent);
 
                 // Buscar productos cercanos automáticamente
                 performSearch();
@@ -59,7 +65,7 @@ window.initMap = function() {
 };
 
 function performSearch() {
-    if (!userLocation) {
+    if (!window.userLocation) {
         alert("Esperando obtener tu ubicación...");
         return;
     }

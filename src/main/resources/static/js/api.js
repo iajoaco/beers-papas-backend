@@ -63,7 +63,25 @@ async function searchNearbyProducts() {
     // Obtener la ubicación del usuario
     if (!window.userLocation) {
         console.log('No se ha obtenido la ubicación del usuario');
-        alert('Esperando obtener tu ubicación...');
+        alert('Esperando obtener tu ubicación... Por favor, asegúrate de que la geolocalización está activada.');
+        
+        // Intentar obtener la ubicación nuevamente
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    window.userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    // Intentar la búsqueda nuevamente
+                    searchNearbyProducts();
+                },
+                (error) => {
+                    console.error("Error al obtener la ubicación:", error);
+                    alert("No se pudo obtener tu ubicación. Por favor, asegúrate de que la geolocalización está activada.");
+                }
+            );
+        }
         return;
     }
 
