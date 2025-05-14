@@ -287,21 +287,39 @@ body {
 
 .modal-content input,
 .modal-content textarea,
-.modal-content select {
+.modal-content select,
+.page-content input,
+.page-content textarea,
+.page-content select {
     width: 100%;
     padding: 0.7rem 1rem;
     margin-bottom: 1rem;
-    border: 1.5px solid #ffd700;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     font-size: 1rem;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     color: #fff;
     backdrop-filter: blur(2px);
-    transition: border 0.2s;
+    transition: all 0.3s ease;
 }
 
-.modal-content input:focus {
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus,
+.page-content input:focus,
+.page-content textarea:focus,
+.page-content select:focus {
     outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-content input::placeholder,
+.modal-content textarea::placeholder,
+.page-content input::placeholder,
+.page-content textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    opacity: 1;
 }
 
 .modal-content button {
@@ -408,15 +426,6 @@ body {
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cachopo.jpg');
     background-size: cover;
     background-position: center;
-}
-
-/* Inputs translúcidos */
-.modal-content input::placeholder,
-.modal-content textarea::placeholder,
-.page-content input::placeholder,
-.page-content textarea::placeholder {
-    color: #111;
-    opacity: 1;
 }
 
 .results-container {
