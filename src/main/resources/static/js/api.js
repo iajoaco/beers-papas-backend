@@ -36,7 +36,7 @@ async function loadCategories() {
         
         categories.forEach(category => {
             const option = document.createElement('option');
-            option.value = category.productCategoryId;
+            option.value = category.id;  // Asegurarse de que esto coincida con el backend
             option.textContent = category.name;
             categorySelect.appendChild(option);
         });
@@ -77,7 +77,7 @@ async function searchNearbyProducts() {
     // Validar y convertir los valores numéricos
     const minPriceValue = minPrice.trim() !== '' ? parseFloat(minPrice) : null;
     const maxPriceValue = maxPrice.trim() !== '' ? parseFloat(maxPrice) : null;
-    const categoryIdValue = categoryId.trim() !== '' ? parseInt(categoryId) : null;
+    const categoryIdValue = categoryId && categoryId !== '' ? parseInt(categoryId) : null;
 
     // Validar que el precio mínimo no sea mayor que el máximo
     if (minPriceValue !== null && maxPriceValue !== null && minPriceValue > maxPriceValue) {
