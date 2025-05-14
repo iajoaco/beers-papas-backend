@@ -35,13 +35,15 @@ async function loadCategories() {
         }
         
         categories.forEach(category => {
+            console.log('Añadiendo categoría:', category);
             const option = document.createElement('option');
-            option.value = category.id;  // Asegurarse de que esto coincida con el backend
+            option.value = category.productCategoryId;
             option.textContent = category.name;
             categorySelect.appendChild(option);
         });
         
-        console.log('Categorías cargadas correctamente');
+        console.log('Categorías cargadas. Opciones actuales:', 
+            Array.from(categorySelect.options).map(opt => ({value: opt.value, text: opt.text})));
     } catch (error) {
         console.error('Error al cargar categorías:', error);
         alert('Error al cargar las categorías. Por favor, recarga la página.');
@@ -56,12 +58,6 @@ async function searchNearbyProducts() {
     const maxPrice = document.getElementById('maxPriceInput').value;
     const categoryId = document.getElementById('categoryInput').value;
     const resultsDiv = document.getElementById('results');
-
-    console.log('Término de búsqueda:', searchTerm);
-    console.log('Radio:', radius);
-    console.log('Precio mínimo:', minPrice);
-    console.log('Precio máximo:', maxPrice);
-    console.log('Categoría:', categoryId);
 
     // Obtener la ubicación actual del usuario
     if (!userMarker) {
@@ -95,7 +91,14 @@ async function searchNearbyProducts() {
         categoryId: categoryIdValue
     };
 
-    console.log('Enviando petición:', request);
+    console.log('Enviando petición con los siguientes valores:');
+    console.log('- Término de búsqueda:', request.searchTerm);
+    console.log('- Radio:', request.radiusInKm);
+    console.log('- Precio mínimo:', request.minPrice);
+    console.log('- Precio máximo:', request.maxPrice);
+    console.log('- Categoría:', request.categoryId);
+    console.log('- Latitud:', request.latitude);
+    console.log('- Longitud:', request.longitude);
 
     try {
         const response = await fetch('/api/products/nearby', {
