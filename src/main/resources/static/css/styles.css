@@ -477,6 +477,13 @@ body {
     font-size: 1.2em;
 }
 
+.info-window .place-name {
+    color: #666;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+}
+
 .info-window p {
     margin: 5px 0;
     color: #666;

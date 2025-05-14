@@ -141,6 +141,7 @@ function addProductMarker(product) {
     const contentString = `
         <div class="info-window">
             <h3>${product.name}</h3>
+            <p class="place-name">${product.placeName}</p>
             <p>${product.description || ''}</p>
             <p class="price">${product.price}€</p>
             <p class="rating">⭐ ${product.averageRating ? product.averageRating.toFixed(1) : '0.0'} (${product.ratingCount || 0} valoraciones)</p>
