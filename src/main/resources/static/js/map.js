@@ -143,9 +143,8 @@ function addProductMarker(product) {
             <h3>${product.name}</h3>
             <p>${product.description || ''}</p>
             <p class="price">${product.price}€</p>
-            <p class="category">${product.categoryName}</p>
-            <p>${product.placeName}</p>
-            <p>${product.placeAddress}</p>
+            <p class="rating">⭐ ${product.averageRating ? product.averageRating.toFixed(1) : '0.0'} (${product.ratingCount || 0} valoraciones)</p>
+            ${product.website ? `<p class="website"><a href="${product.website}" target="_blank">Visitar web</a></p>` : ''}
             <p class="distance">A ${product.distanceInKm.toFixed(2)} km</p>
         </div>
     `;

@@ -488,14 +488,24 @@ body {
     font-size: 1.1em;
 }
 
-.info-window .category {
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: #495057;
+.info-window .rating {
+    color: #ffc107;
+    font-size: 1.1em;
     margin: 0.5rem 0;
+}
+
+.info-window .website {
+    margin: 0.5rem 0;
+}
+
+.info-window .website a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.info-window .website a:hover {
+    text-decoration: underline;
 }
 
 .info-window .distance {
