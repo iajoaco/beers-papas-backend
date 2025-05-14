@@ -267,11 +267,8 @@ body {
 }
 
 .modal-content {
-    background: rgba(40, 40, 40, 0.4);
     color: #fff;
     padding: 2rem 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.2);
     min-width: 320px;
     max-width: 90vw;
     position: relative;
@@ -379,11 +376,8 @@ body {
     display: none;
 }
 .page-content {
-    background: rgba(40, 40, 40, 0.4);
     color: #fff;
     padding: 2.5rem 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.2);
     min-width: 320px;
     max-width: 90vw;
     display: flex;
