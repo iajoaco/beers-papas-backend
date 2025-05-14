@@ -89,8 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof map === 'undefined') {
             initMap();
         }
-        // Cargar categorías cuando se muestra el mapa
-        loadCategories();
     });
 
     // Cerrar modal de valoración
@@ -108,34 +106,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Botón de búsqueda
     const searchButton = document.getElementById('searchButton');
-    searchButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        searchNearbyProducts();
-    });
-
-    // Añadir listeners para los inputs de precio
-    const minPriceInput = document.getElementById('minPriceInput');
-    const maxPriceInput = document.getElementById('maxPriceInput');
-    const categoryInput = document.getElementById('categoryInput');
-
-    // Validar precio mínimo cuando cambia
-    minPriceInput.addEventListener('change', function() {
-        const minPrice = parseFloat(this.value);
-        const maxPrice = parseFloat(maxPriceInput.value);
-        if (maxPrice && minPrice > maxPrice) {
-            alert('El precio mínimo no puede ser mayor que el precio máximo');
-            this.value = '';
-        }
-    });
-
-    // Validar precio máximo cuando cambia
-    maxPriceInput.addEventListener('change', function() {
-        const maxPrice = parseFloat(this.value);
-        const minPrice = parseFloat(minPriceInput.value);
-        if (minPrice && maxPrice < minPrice) {
-            alert('El precio máximo no puede ser menor que el precio mínimo');
-            this.value = '';
-        }
+    searchButton.addEventListener('click', function() {
+        const searchTerm = document.getElementById('searchInput').value;
+        const radius = document.getElementById('radiusInput').value;
+        searchNearbyProducts(searchTerm, radius);
     });
 
     // Función para saber si el usuario está logueado

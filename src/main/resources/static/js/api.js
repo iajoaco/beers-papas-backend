@@ -29,21 +29,16 @@ async function loadCategories() {
         console.log('Categorías recibidas:', categories);
         
         const categorySelect = document.getElementById('categoryInput');
-        // Limpiar el select excepto la primera opción
-        while (categorySelect.options.length > 1) {
-            categorySelect.remove(1);
-        }
+        categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
         
         categories.forEach(category => {
-            console.log('Añadiendo categoría:', category);
             const option = document.createElement('option');
             option.value = category.productCategoryId;
             option.textContent = category.name;
             categorySelect.appendChild(option);
         });
         
-        console.log('Categorías cargadas. Opciones actuales:', 
-            Array.from(categorySelect.options).map(opt => ({value: opt.value, text: opt.text})));
+        console.log('Categorías cargadas correctamente');
     } catch (error) {
         console.error('Error al cargar categorías:', error);
         alert('Error al cargar las categorías. Por favor, recarga la página.');
@@ -56,9 +51,14 @@ async function searchNearbyProducts() {
     const radius = document.getElementById('radiusInput').value;
     const minPrice = document.getElementById('minPriceInput').value;
     const maxPrice = document.getElementById('maxPriceInput').value;
-    const categorySelect = document.getElementById('categoryInput');
-    const categoryId = categorySelect.value;
+    const categoryId = document.getElementById('categoryInput').value;
     const resultsDiv = document.getElementById('results');
+
+    console.log('Término de búsqueda:', searchTerm);
+    console.log('Radio:', radius);
+    console.log('Precio mínimo:', minPrice);
+    console.log('Precio máximo:', maxPrice);
+    console.log('Categoría:', categoryId);
 
     // Obtener la ubicación actual del usuario
     if (!userMarker) {
@@ -74,8 +74,7 @@ async function searchNearbyProducts() {
     // Validar y convertir los valores numéricos
     const minPriceValue = minPrice.trim() !== '' ? parseFloat(minPrice) : null;
     const maxPriceValue = maxPrice.trim() !== '' ? parseFloat(maxPrice) : null;
-    const categoryIdValue = categoryId && categoryId !== '' ? parseInt(categoryId) : null;
-    const radiusValue = parseFloat(radius);
+    const categoryIdValue = categoryId.trim() !== '' ? parseInt(categoryId) : null;
 
     // Validar que el precio mínimo no sea mayor que el máximo
     if (minPriceValue !== null && maxPriceValue !== null && minPriceValue > maxPriceValue) {
@@ -87,20 +86,13 @@ async function searchNearbyProducts() {
         searchTerm: searchTerm.trim() !== '' ? searchTerm : null,
         latitude: position.lat,
         longitude: position.lng,
-        radiusInKm: radiusValue,
+        radiusInKm: parseFloat(radius),
         minPrice: minPriceValue,
         maxPrice: maxPriceValue,
         categoryId: categoryIdValue
     };
 
-    console.log('Enviando petición con los siguientes valores:');
-    console.log('- Término de búsqueda:', request.searchTerm);
-    console.log('- Radio:', request.radiusInKm);
-    console.log('- Precio mínimo:', request.minPrice);
-    console.log('- Precio máximo:', request.maxPrice);
-    console.log('- Categoría:', request.categoryId);
-    console.log('- Latitud:', request.latitude);
-    console.log('- Longitud:', request.longitude);
+    console.log('Enviando petición:', request);
 
     try {
         const response = await fetch('/api/products/nearby', {
