@@ -29,7 +29,10 @@ async function loadCategories() {
         console.log('Categorías recibidas:', categories);
         
         const categorySelect = document.getElementById('categoryInput');
-        categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
+        // Limpiar el select excepto la primera opción
+        while (categorySelect.options.length > 1) {
+            categorySelect.remove(1);
+        }
         
         categories.forEach(category => {
             const option = document.createElement('option');
