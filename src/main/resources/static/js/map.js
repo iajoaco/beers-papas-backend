@@ -3,7 +3,8 @@ let markers = [];
 let userMarker;
 let userLocation = null;
 
-function initMap() {
+// Asegurarnos de que initMap esté disponible globalmente
+window.initMap = function() {
     // Inicializar el mapa centrado en Madrid
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 40.4168, lng: -3.7038 },
@@ -55,7 +56,7 @@ function initMap() {
     } else {
         alert("Tu navegador no soporta geolocalización.");
     }
-}
+};
 
 function performSearch() {
     if (!userLocation) {
@@ -118,6 +119,4 @@ function addProductMarker(product) {
     });
 
     markers.push(marker);
-}
-
-window.initMap = initMap; 
+} 
