@@ -75,4 +75,49 @@ function clearMarkers() {
     markers = [];
 }
 
+function addProductMarker(product) {
+    const position = {
+        lat: product.latitude,
+        lng: product.longitude
+    };
+
+    const marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title: product.name,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#FF0000",
+            fillOpacity: 1,
+            strokeColor: "#ffffff",
+            strokeWeight: 2,
+        }
+    });
+
+    // Crear el contenido del InfoWindow
+    const contentString = `
+        <div class="info-window">
+            <h3>${product.name}</h3>
+            <p>${product.description || ''}</p>
+            <p class="price">${product.price}€</p>
+            <p class="category">${product.categoryName}</p>
+            <p>${product.placeName}</p>
+            <p>${product.placeAddress}</p>
+            <p class="distance">A ${product.distanceInKm.toFixed(2)} km</p>
+        </div>
+    `;
+
+    const infoWindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+
+    // Añadir evento de clic al marcador
+    marker.addListener('click', () => {
+        infoWindow.open(map, marker);
+    });
+
+    markers.push(marker);
+}
+
 window.initMap = initMap; 

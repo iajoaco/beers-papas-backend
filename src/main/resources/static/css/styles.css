@@ -463,4 +463,42 @@ body {
     font-size: 0.9em;
     color: #495057;
     margin: 0.5rem 0;
+}
+
+/* Estilos para el InfoWindow */
+.info-window {
+    padding: 10px;
+    max-width: 300px;
+}
+
+.info-window h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.info-window p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.info-window .price {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1em;
+}
+
+.info-window .category {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #495057;
+    margin: 0.5rem 0;
+}
+
+.info-window .distance {
+    color: #666;
+    font-size: 0.9em;
 } 
