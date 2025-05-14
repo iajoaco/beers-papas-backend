@@ -60,16 +60,21 @@ async function searchNearbyProducts() {
     console.log('Precio máximo:', maxPrice);
     console.log('Categoría:', categoryId);
 
-    // Obtener la ubicación actual del usuario
-    if (!userMarker) {
-        console.log('No se ha obtenido la ubicación del usuario');
-        alert('Esperando obtener tu ubicación...');
+    // Obtener la posición actual del mapa
+    if (!map) {
+        console.log('El mapa no está inicializado');
+        alert('Esperando a que el mapa se cargue...');
         return;
     }
 
-    // Obtener la posición del marcador del usuario
-    const position = userMarker.position;
-    console.log('Posición actual:', position.lat, position.lng);
+    const center = map.getCenter();
+    if (!center) {
+        console.log('No se puede obtener el centro del mapa');
+        alert('No se puede obtener la ubicación actual. Por favor, espera a que el mapa se cargue completamente.');
+        return;
+    }
+
+    console.log('Posición actual:', center.lat(), center.lng());
 
     // Validar y convertir los valores numéricos
     const minPriceValue = minPrice.trim() !== '' ? parseFloat(minPrice) : null;
@@ -94,8 +99,8 @@ async function searchNearbyProducts() {
 
     const request = {
         searchTerm: searchTerm.trim() !== '' ? searchTerm : null,
-        latitude: position.lat,
-        longitude: position.lng,
+        latitude: center.lat(),
+        longitude: center.lng(),
         radiusInKm: parseFloat(radius),
         minPrice: minPriceValue,
         maxPrice: maxPriceValue,
