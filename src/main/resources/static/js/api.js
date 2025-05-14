@@ -82,6 +82,16 @@ async function searchNearbyProducts() {
         return;
     }
 
+    // Validar que los precios sean números válidos
+    if (minPriceValue !== null && isNaN(minPriceValue)) {
+        alert('El precio mínimo debe ser un número válido');
+        return;
+    }
+    if (maxPriceValue !== null && isNaN(maxPriceValue)) {
+        alert('El precio máximo debe ser un número válido');
+        return;
+    }
+
     const request = {
         searchTerm: searchTerm.trim() !== '' ? searchTerm : null,
         latitude: position.lat,
