@@ -56,7 +56,8 @@ async function searchNearbyProducts() {
     const radius = document.getElementById('radiusInput').value;
     const minPrice = document.getElementById('minPriceInput').value;
     const maxPrice = document.getElementById('maxPriceInput').value;
-    const categoryId = document.getElementById('categoryInput').value;
+    const categorySelect = document.getElementById('categoryInput');
+    const categoryId = categorySelect.value;
     const resultsDiv = document.getElementById('results');
 
     // Obtener la ubicación actual del usuario
