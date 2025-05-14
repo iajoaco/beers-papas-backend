@@ -417,4 +417,50 @@ body {
 .page-content textarea::placeholder {
     color: #111;
     opacity: 1;
+}
+
+.results-container {
+    margin-top: 20px;
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.results-container .product-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.results-container .product-card h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.results-container .product-card .price {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1em;
+}
+
+.results-container .product-card .distance {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.results-container .product-card p {
+    margin: 5px 0;
+}
+
+.results-container .product-card .category {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #495057;
+    margin: 0.5rem 0;
 } 

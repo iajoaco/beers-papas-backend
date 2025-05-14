@@ -124,39 +124,47 @@ async function searchNearbyProducts() {
         console.log('Productos encontrados:', products);
         
         // Limpiar marcadores anteriores
-        clearProductMarkers();
+        if (typeof clearMarkers === 'function') {
+            clearMarkers();
+        }
         
         // Limpiar resultados anteriores
-        resultsDiv.innerHTML = '';
+        if (resultsDiv) {
+            resultsDiv.innerHTML = '';
 
-        if (products.length === 0) {
-            resultsDiv.innerHTML = '<p>No se encontraron productos cercanos.</p>';
-            return;
+            if (products.length === 0) {
+                resultsDiv.innerHTML = '<p>No se encontraron productos cercanos.</p>';
+                return;
+            }
+
+            // Mostrar resultados
+            products.forEach(product => {
+                console.log('Procesando producto:', product);
+                // Añadir marcador al mapa
+                if (typeof addProductMarker === 'function') {
+                    addProductMarker(product);
+                }
+
+                // Crear tarjeta de producto
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>${product.description || ''}</p>
+                    <p class="price">${product.price}€</p>
+                    <p class="category">${product.categoryName}</p>
+                    <p>${product.placeName}</p>
+                    <p>${product.placeAddress}</p>
+                    <p class="distance">A ${product.distanceInKm.toFixed(2)} km</p>
+                `;
+                resultsDiv.appendChild(productCard);
+            });
         }
-
-        // Mostrar resultados
-        products.forEach(product => {
-            console.log('Procesando producto:', product);
-            // Añadir marcador al mapa
-            addProductMarker(product);
-
-            // Crear tarjeta de producto
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            productCard.innerHTML = `
-                <h3>${product.name}</h3>
-                <p>${product.description || ''}</p>
-                <p class="price">${product.price}€</p>
-                <p class="category">${product.categoryName}</p>
-                <p>${product.placeName}</p>
-                <p>${product.placeAddress}</p>
-                <p class="distance">A ${product.distanceInKm.toFixed(2)} km</p>
-            `;
-            resultsDiv.appendChild(productCard);
-        });
     } catch (error) {
         console.error('Error en la búsqueda:', error);
-        resultsDiv.innerHTML = `<p>Error al buscar productos: ${error.message}</p>`;
+        if (resultsDiv) {
+            resultsDiv.innerHTML = `<p>Error al buscar productos: ${error.message}</p>`;
+        }
     }
 }
 
