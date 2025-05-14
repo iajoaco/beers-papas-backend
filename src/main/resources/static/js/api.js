@@ -17,9 +17,19 @@ async function fetchWithAuth(url, options = {}) {
 
 async function loadCategories() {
     try {
+        console.log('Cargando categorías...');
         const response = await fetch('/api/products/categories');
+        console.log('Respuesta de categorías:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`Error al cargar categorías: ${response.status}`);
+        }
+        
         const categories = await response.json();
+        console.log('Categorías recibidas:', categories);
+        
         const categorySelect = document.getElementById('categoryInput');
+        categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
         
         categories.forEach(category => {
             const option = document.createElement('option');
@@ -27,15 +37,18 @@ async function loadCategories() {
             option.textContent = category.name;
             categorySelect.appendChild(option);
         });
+        
+        console.log('Categorías cargadas correctamente');
     } catch (error) {
         console.error('Error al cargar categorías:', error);
+        alert('Error al cargar las categorías. Por favor, recarga la página.');
     }
 }
 
 async function searchNearbyProducts() {
     console.log('Iniciando búsqueda de productos...');
-    const searchTerm = document.getElementById('searchTerm').value;
-    const radius = document.getElementById('radius').value;
+    const searchTerm = document.getElementById('searchInput').value;
+    const radius = document.getElementById('radiusInput').value;
     const minPrice = document.getElementById('minPriceInput').value;
     const maxPrice = document.getElementById('maxPriceInput').value;
     const categoryId = document.getElementById('categoryInput').value;
@@ -126,5 +139,11 @@ async function searchNearbyProducts() {
     }
 }
 
-// Cargar categorías cuando se carga la página
-document.addEventListener('DOMContentLoaded', loadCategories); 
+// Cargar categorías cuando se carga la página y cuando se muestra el mapa
+document.addEventListener('DOMContentLoaded', loadCategories);
+
+// Añadir listener para cargar categorías cuando se muestra el mapa
+document.getElementById('searchLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    loadCategories();
+}); 

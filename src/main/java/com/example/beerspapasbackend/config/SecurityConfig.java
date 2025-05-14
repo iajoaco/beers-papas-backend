@@ -40,7 +40,7 @@ public class SecurityConfig {
                 logger.debug("Configurando reglas de autorización");
                 auth
                     .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/img/**", "/api/auth/**", "/api/products/nearby", 
-                                   "/api/users/register", "/favicon.ico", "/error").permitAll()
+                                   "/api/users/register", "/api/products/categories", "/favicon.ico", "/error").permitAll()
                     .anyRequest().authenticated();
             })
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))

@@ -84,6 +84,12 @@ public class ProductController {
             @RequestBody NearbyProductSearchRequest request) {
         System.out.println("Buscando productos cercanos con parámetros: " + request);
         
+        // Validar parámetros de precio
+        if (request.getMinPrice() != null && request.getMaxPrice() != null 
+            && request.getMinPrice() > request.getMaxPrice()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
         List<Product> products = productService.findNearbyProducts(
             request.getSearchTerm(),
             request.getLatitude(),

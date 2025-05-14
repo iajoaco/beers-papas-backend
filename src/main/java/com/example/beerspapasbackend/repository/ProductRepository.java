@@ -27,6 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 sin(radians(p.latitude))
             )
         ) <= :radiusInKm
+        ORDER BY p.price ASC
     """, nativeQuery = true)
     List<Product> findNearbyProducts(
         @Param("searchTerm") String searchTerm,
