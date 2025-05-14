@@ -66,57 +66,8 @@ function searchNearbyProducts(searchTerm = '', radius = 1) {
     // Limpiar marcadores anteriores
     clearMarkers();
 
-    // Realizar la búsqueda
-    fetch('/api/products/nearby', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            searchTerm: searchTerm,
-            latitude: userLocation.lat,
-            longitude: userLocation.lng,
-            radiusInKm: parseFloat(radius)
-        })
-    })
-    .then(response => response.json())
-    .then(products => {
-        products.forEach(product => {
-            const position = {
-                lat: product.latitude,
-                lng: product.longitude
-            };
-
-            const marker = new google.maps.Marker({
-                position: position,
-                map: map,
-                title: product.name
-            });
-
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div class="info-window">
-                        <h3>${product.name}</h3>
-                        <p>${product.description}</p>
-                        <p>Precio: ${product.price}€</p>
-                        <p>Lugar: ${product.placeName}</p>
-                        <p>Dirección: ${product.placeAddress}</p>
-                        <p>Distancia: ${product.distanceInKm.toFixed(2)} km</p>
-                    </div>
-                `
-            });
-
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-
-            markers.push(marker);
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al buscar productos cercanos');
-    });
+    // Usar la función de api.js para la búsqueda
+    window.searchNearbyProducts();
 }
 
 function clearMarkers() {

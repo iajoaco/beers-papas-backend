@@ -107,9 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Botón de búsqueda
     const searchButton = document.getElementById('searchButton');
     searchButton.addEventListener('click', function() {
-        const searchTerm = document.getElementById('searchInput').value;
-        const radius = document.getElementById('radiusInput').value;
-        searchNearbyProducts(searchTerm, radius);
+        window.searchNearbyProducts();
     });
 
     // Función para saber si el usuario está logueado
