@@ -71,14 +71,25 @@ async function searchNearbyProducts() {
     const position = userMarker.position;
     console.log('Posición actual:', position.lat, position.lng);
 
+    // Validar y convertir los valores numéricos
+    const minPriceValue = minPrice.trim() !== '' ? parseFloat(minPrice) : null;
+    const maxPriceValue = maxPrice.trim() !== '' ? parseFloat(maxPrice) : null;
+    const categoryIdValue = categoryId.trim() !== '' ? parseInt(categoryId) : null;
+
+    // Validar que el precio mínimo no sea mayor que el máximo
+    if (minPriceValue !== null && maxPriceValue !== null && minPriceValue > maxPriceValue) {
+        alert('El precio mínimo no puede ser mayor que el precio máximo');
+        return;
+    }
+
     const request = {
-        searchTerm: searchTerm || null,
+        searchTerm: searchTerm.trim() !== '' ? searchTerm : null,
         latitude: position.lat,
         longitude: position.lng,
         radiusInKm: parseFloat(radius),
-        minPrice: minPrice ? parseFloat(minPrice) : null,
-        maxPrice: maxPrice ? parseFloat(maxPrice) : null,
-        categoryId: categoryId ? parseInt(categoryId) : null
+        minPrice: minPriceValue,
+        maxPrice: maxPriceValue,
+        categoryId: categoryIdValue
     };
 
     console.log('Enviando petición:', request);
