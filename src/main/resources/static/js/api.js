@@ -67,19 +67,41 @@ async function searchNearbyProducts() {
         
         // Intentar obtener la ubicación nuevamente
         if (navigator.geolocation) {
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    console.log('Nueva ubicación obtenida:', position);
                     window.userLocation = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
+                    console.log('Nueva ubicación del usuario establecida:', window.userLocation);
                     // Intentar la búsqueda nuevamente
                     searchNearbyProducts();
                 },
                 (error) => {
                     console.error("Error al obtener la ubicación:", error);
-                    alert("No se pudo obtener tu ubicación. Por favor, asegúrate de que la geolocalización está activada.");
-                }
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert("Se ha denegado el permiso para obtener tu ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert("La información de ubicación no está disponible. Por favor, verifica tu conexión a internet.");
+                            break;
+                        case error.TIMEOUT:
+                            alert("La solicitud para obtener tu ubicación ha expirado. Por favor, intenta de nuevo.");
+                            break;
+                        default:
+                            alert("Ha ocurrido un error al obtener tu ubicación. Por favor, intenta de nuevo.");
+                            break;
+                    }
+                },
+                options
             );
         }
         return;
