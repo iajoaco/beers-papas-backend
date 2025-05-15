@@ -80,7 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         },
         'Refresco': {
-            volumes: [], // No volumes for refrescos
+            volumes: [
+                { value: '0.33', label: '0.33L (Lata)' },
+                { value: '0.5', label: '0.5L (Botella)' }
+            ],
             subtypes: [
                 { value: 'CocaCola', label: 'CocaCola' },
                 { value: 'Aquarius', label: 'Aquarius' },
