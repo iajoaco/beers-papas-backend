@@ -14,9 +14,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const heroSection = document.querySelector('.hero-section');
     const rateModal = document.getElementById('rateModal');
     const contributeModal = document.getElementById('contributeModal');
+    const closeRateModal = document.getElementById('closeRateModal');
     const closeContributeModal = document.getElementById('closeContributeModal');
+    const closeRegisterPage = document.getElementById('closeRegisterPage');
+    const closeLoginPage = document.getElementById('closeLoginPage');
     const contributeForm = document.getElementById('contributeForm');
     const contributeMessage = document.getElementById('contributeMessage');
+
+    // Manejar opciones de bebida
+    const contributeDrinkType = document.getElementById('contributeDrinkType');
+    const drinkOptions = document.getElementById('drinkOptions');
+    const drinkVolume = document.getElementById('drinkVolume');
+    const drinkSubtype = document.getElementById('drinkSubtype');
+
+    contributeDrinkType.addEventListener('change', function() {
+        const selectedDrink = this.value;
+        if (selectedDrink === 'Tercio' || selectedDrink === 'Botellin' || selectedDrink === 'Doble' || selectedDrink === 'Caña') {
+            drinkOptions.classList.remove('hidden');
+            // Actualizar opciones de volumen según el tipo de bebida
+            if (selectedDrink === 'Caña') {
+                drinkVolume.value = '0.2';
+            } else if (selectedDrink === 'Tercio') {
+                drinkVolume.value = '0.3';
+            } else if (selectedDrink === 'Botellin') {
+                drinkVolume.value = '0.5';
+            } else if (selectedDrink === 'Doble') {
+                drinkVolume.value = '1.0';
+            }
+        } else {
+            drinkOptions.classList.add('hidden');
+        }
+    });
 
     // Toggle del menú móvil
     menuToggle.addEventListener('click', function() {
@@ -112,13 +140,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Cerrar modales
-    const closeRateModal = document.getElementById('closeRateModal');
-    const closeRegisterPage = document.getElementById('closeRegisterPage');
-    const closeLoginPage = document.getElementById('closeLoginPage');
-
     if (closeRateModal) {
         closeRateModal.addEventListener('click', function() {
             rateModal.classList.add('hidden');
+        });
+    }
+
+    if (closeContributeModal) {
+        closeContributeModal.addEventListener('click', function() {
+            contributeModal.classList.add('hidden');
         });
     }
 
@@ -141,6 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (event.target === contributeModal) {
             contributeModal.classList.add('hidden');
+        }
+        if (event.target === loginPage) {
+            showPage('hero');
         }
     });
 
@@ -165,17 +198,25 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const contributionData = {
+            drinkType: drinkType,
+            price: parseFloat(price),
+            placeName: placeName
+        };
+
+        // Añadir opciones adicionales si es una cerveza
+        if (drinkType === 'Tercio' || drinkType === 'Botellin' || drinkType === 'Doble' || drinkType === 'Caña') {
+            contributionData.volume = drinkVolume.value;
+            contributionData.subtype = drinkSubtype.value;
+        }
+
         fetch('/api/products/contribute', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({
-                drinkType: drinkType,
-                price: parseFloat(price),
-                placeName: placeName
-            })
+            body: JSON.stringify(contributionData)
         })
         .then(res => {
             if (res.ok) return res.json();
@@ -188,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 contributeModal.classList.add('hidden');
                 contributeForm.reset();
                 contributeMessage.textContent = '';
+                drinkOptions.classList.add('hidden');
             }, 1500);
         })
         .catch(err => {

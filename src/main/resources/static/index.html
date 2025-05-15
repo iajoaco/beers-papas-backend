@@ -115,6 +115,26 @@
                         <option value="Refrescos">Refrescos</option>
                         <option value="Sidra">Sidra</option>
                     </select>
+                    <div id="drinkOptions" class="drink-options hidden">
+                        <div class="option-group">
+                            <label>Volumen:</label>
+                            <select id="drinkVolume">
+                                <option value="0.2">0.2L (Caña)</option>
+                                <option value="0.3">0.3L (Tercio)</option>
+                                <option value="0.5">0.5L (Botellín)</option>
+                                <option value="1.0">1.0L (Doble)</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label>Tipo:</label>
+                            <select id="drinkSubtype">
+                                <option value="Rubia">Rubia</option>
+                                <option value="Negra">Negra</option>
+                                <option value="Tostada">Tostada</option>
+                                <option value="Especial">Especial</option>
+                            </select>
+                        </div>
+                    </div>
                     <input type="number" id="contributePrice" step="0.01" min="0" placeholder="Precio (€)" required>
                     <input type="text" id="contributePlaceName" placeholder="Nombre del local" required>
                     <button type="submit">Enviar contribución</button>

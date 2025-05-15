@@ -178,6 +178,10 @@ public class ProductController {
             // Update existing product price
             Product existingProduct = existingProducts.get(0);
             existingProduct.setPrice(request.getPrice());
+            // Update description with volume and subtype if provided
+            if (request.getVolume() != null && request.getSubtype() != null) {
+                existingProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
+            }
             return ResponseEntity.ok(productRepository.save(existingProduct));
         } else {
             // Create new product
@@ -188,6 +192,11 @@ public class ProductController {
             newProduct.setCategory(drinksCategory);
             newProduct.setLatitude(place.getLatitude());
             newProduct.setLongitude(place.getLongitude());
+            
+            // Set description with volume and subtype if provided
+            if (request.getVolume() != null && request.getSubtype() != null) {
+                newProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
+            }
             
             return ResponseEntity.ok(productRepository.save(newProduct));
         }
