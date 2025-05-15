@@ -176,7 +176,7 @@ public class ProductController {
         // Special handling for Refresco type
         if ("Refresco".equals(request.getDrinkType())) {
             productName = request.getSubtype(); // Use subtype (e.g., "CocaCola") as the product name
-            description = request.getSubtype(); // Description is the same as the name
+            description = String.format("%s %s", request.getSubtype(), request.getVolumeLabel().toLowerCase()); // e.g., "CocaCola lata"
         } else {
             // Get the descriptive volume label from the request
             String volumeLabel = request.getVolumeLabel();
