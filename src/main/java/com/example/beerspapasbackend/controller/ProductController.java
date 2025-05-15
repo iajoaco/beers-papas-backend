@@ -170,8 +170,21 @@ public class ProductController {
         ProductCategory drinksCategory = categoryRepository.findByName("Bebidas")
                 .orElseThrow(() -> new RuntimeException("Drinks category not found"));
 
-        // Format product name with volume
-        String productName = String.format("%s(%s)", request.getDrinkType(), request.getVolume());
+        String productName;
+        String description;
+
+        // Special handling for Refresco type
+        if ("Refresco".equals(request.getDrinkType())) {
+            productName = request.getSubtype(); // Use subtype (e.g., "CocaCola") as the product name
+            description = request.getSubtype(); // Description is the same as the name
+        } else {
+            // Get the descriptive volume label from the request
+            String volumeLabel = request.getVolumeLabel();
+            // Format product name with descriptive volume
+            productName = String.format("%s(%s)", request.getDrinkType(), volumeLabel);
+            // Format description with subtype and numeric volume
+            description = String.format("%s %sL", request.getSubtype(), request.getVolume());
+        }
 
         // Check if product already exists
         List<Product> existingProducts = productRepository.findByNameAndPlaceName(productName, request.getPlaceName());
@@ -180,10 +193,7 @@ public class ProductController {
             // Update existing product price
             Product existingProduct = existingProducts.get(0);
             existingProduct.setPrice(request.getPrice());
-            // Update description with subtype and volume
-            if (request.getSubtype() != null) {
-                existingProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
-            }
+            existingProduct.setDescription(description);
             return ResponseEntity.ok(productRepository.save(existingProduct));
         } else {
             // Create new product
@@ -194,11 +204,7 @@ public class ProductController {
             newProduct.setCategory(drinksCategory);
             newProduct.setLatitude(place.getLatitude());
             newProduct.setLongitude(place.getLongitude());
-            
-            // Set description with subtype and volume
-            if (request.getSubtype() != null) {
-                newProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
-            }
+            newProduct.setDescription(description);
             
             return ResponseEntity.ok(productRepository.save(newProduct));
         }

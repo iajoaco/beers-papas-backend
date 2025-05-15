@@ -32,9 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
         'Cerveza': {
             volumes: [
                 { value: '0.2', label: '0.2L (Caña)' },
+                { value: '0.2', label: '0.2L (Botellín)' },
                 { value: '0.3', label: '0.3L (Tercio)' },
-                { value: '0.5', label: '0.5L (Botellín)' },
-                { value: '1.0', label: '1.0L (Doble)' }
+                { value: '0.4', label: '0.4L (Doble)' },
+                { value: '0.5', label: '0.5L (Jarra)' }
             ],
             subtypes: [
                 { value: 'Rubia', label: 'Rubia' },
@@ -46,9 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'Sidra': {
             volumes: [
                 { value: '0.2', label: '0.2L (Culín)' },
-                { value: '0.3', label: '0.3L (Media)' },
-                { value: '0.5', label: '0.5L (Botellín)' },
-                { value: '1.0', label: '1.0L (Botella)' }
+                { value: '0.3', label: '0.3L (Tercio)' },
+                { value: '0.5', label: '0.5L (Jarra)' }
             ],
             subtypes: [
                 { value: 'Natural', label: 'Natural' },
@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         'Tinto': {
             volumes: [
-                { value: '0.2', label: '0.2L (Tinto)' },
-                { value: '0.3', label: '0.3L (Tinto)' },
-                { value: '0.5', label: '0.5L (Tinto)' }
+                { value: '0.4', label: '0.4L (Doble)' },
+                { value: '0.5', label: '0.5L (Jarra)' },
+                { value: '1.0', label: '1.0L (Jarra Grande)' }
             ],
             subtypes: [
                 { value: 'Normal', label: 'Normal' },
@@ -71,13 +71,22 @@ document.addEventListener('DOMContentLoaded', function() {
         'Vino': {
             volumes: [
                 { value: '0.1', label: '0.1L (Copa)' },
-                { value: '0.5', label: '0.5L (Media Botella)' },
-                { value: '1.0', label: '1.0L (Botella)' }
+                { value: '0.75', label: '0.75L (Botella)' }
             ],
             subtypes: [
                 { value: 'Tinto', label: 'Tinto' },
                 { value: 'Blanco', label: 'Blanco' },
                 { value: 'Rosado', label: 'Rosado' }
+            ]
+        },
+        'Refresco': {
+            volumes: [], // No volumes for refrescos
+            subtypes: [
+                { value: 'CocaCola', label: 'CocaCola' },
+                { value: 'Aquarius', label: 'Aquarius' },
+                { value: 'Fanta', label: 'Fanta' },
+                { value: 'Nestea', label: 'Nestea' },
+                { value: 'Kas', label: 'Kas' }
             ]
         }
     };
@@ -87,9 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const options = drinkOptionsConfig[drinkType];
         if (options) {
             // Actualizar opciones de volumen
-            drinkVolume.innerHTML = options.volumes.map(vol => 
-                `<option value="${vol.value}">${vol.label}</option>`
-            ).join('');
+            if (options.volumes.length > 0) {
+                drinkVolume.innerHTML = options.volumes.map(vol => 
+                    `<option value="${vol.value}">${vol.label}</option>`
+                ).join('');
+                drinkVolume.parentElement.classList.remove('hidden');
+            } else {
+                drinkVolume.parentElement.classList.add('hidden');
+            }
 
             // Actualizar opciones de tipo
             drinkSubtype.innerHTML = options.subtypes.map(sub => 
@@ -269,7 +283,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Añadir opciones adicionales para todas las bebidas
         if (drinkType) {
+            const selectedVolume = drinkVolume.options[drinkVolume.selectedIndex];
             contributionData.volume = drinkVolume.value;
+            contributionData.volumeLabel = selectedVolume.text.split(' ')[1].replace(/[()]/g, ''); // Extract label from option text
             contributionData.subtype = drinkSubtype.value;
         }
 
