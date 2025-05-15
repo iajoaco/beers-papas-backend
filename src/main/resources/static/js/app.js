@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Variable para almacenar la acción pendiente después del login
+    let pendingAction = null;
+
     // Función para actualizar las opciones de volumen y tipo
     function updateDrinkOptions(drinkType) {
         const options = drinkOptionsConfig[drinkType];
@@ -129,6 +132,16 @@ document.addEventListener('DOMContentLoaded', function() {
     contributeDrinkType.addEventListener('change', function() {
         updateDrinkOptions(this.value);
     });
+
+    // Toggle del menú de búsqueda
+    const toggleSearch = document.getElementById('toggleSearch');
+    const searchContainer = document.querySelector('.search-container');
+    
+    if (toggleSearch) {
+        toggleSearch.addEventListener('click', function() {
+            searchContainer.classList.toggle('hidden');
+        });
+    }
 
     // Toggle del menú móvil
     menuToggle.addEventListener('click', function() {
@@ -198,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
     rateLink.addEventListener('click', function(e) {
         e.preventDefault();
         if (!isLoggedIn()) {
+            pendingAction = 'rate';
             showPage('login');
         } else {
             rateModal.classList.remove('hidden');
@@ -208,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     contributeLink.addEventListener('click', function(e) {
         e.preventDefault();
         if (!isLoggedIn()) {
+            pendingAction = 'contribute';
             showPage('login');
         } else {
             contributeModal.classList.remove('hidden');
@@ -386,10 +401,22 @@ document.addEventListener('DOMContentLoaded', function() {
             loginMessage.style.color = '#388e3c';
             loginMessage.textContent = '¡Login exitoso!';
             setTimeout(() => {
-                showPage('hero');
                 loginForm.reset();
                 loginMessage.textContent = '';
                 updateAuthUI();
+                
+                // Primero ocultamos la página de login
+                loginPage.classList.add('hidden');
+                
+                // Redirigir según la acción pendiente
+                if (pendingAction === 'rate') {
+                    rateModal.classList.remove('hidden');
+                } else if (pendingAction === 'contribute') {
+                    contributeModal.classList.remove('hidden');
+                } else {
+                    showPage('hero');
+                }
+                pendingAction = null;
             }, 1000);
         })
         .catch(err => {
