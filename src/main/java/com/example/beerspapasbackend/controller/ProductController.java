@@ -1,5 +1,6 @@
 package com.example.beerspapasbackend.controller;
 
+import com.example.beerspapasbackend.dto.DrinkContributionRequest;
 import com.example.beerspapasbackend.dto.NearbyProductResponse;
 import com.example.beerspapasbackend.dto.NearbyProductSearchRequest;
 import com.example.beerspapasbackend.dto.ProductRequest;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,10 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final PlaceRepository placeRepository;
     private final ProductCategoryRepository categoryRepository;
+    private static final List<String> VALID_DRINK_TYPES = Arrays.asList(
+        "Tercio", "Botellin", "Doble", "Caña", "Copa de vino", 
+        "Tinto de Verano", "Refrescos", "Sidra"
+    );
 
     @Autowired
     private ProductService productService;
@@ -148,6 +154,43 @@ public class ProductController {
     @GetMapping("/categories")
     public ResponseEntity<List<ProductCategory>> getAllCategories() {
         return ResponseEntity.ok(categoryRepository.findAll());
+    }
+
+    @PostMapping("/contribute")
+    public ResponseEntity<?> contributeDrinkPrice(@RequestBody DrinkContributionRequest request) {
+        // Validate drink type
+        if (!VALID_DRINK_TYPES.contains(request.getDrinkType())) {
+            return ResponseEntity.badRequest().body("Invalid drink type. Must be one of: " + VALID_DRINK_TYPES);
+        }
+
+        // Find the place by name
+        Place place = placeRepository.findByName(request.getPlaceName())
+                .orElseThrow(() -> new RuntimeException("Place not found"));
+
+        // Get the drinks category
+        ProductCategory drinksCategory = categoryRepository.findByName("Bebidas")
+                .orElseThrow(() -> new RuntimeException("Drinks category not found"));
+
+        // Check if product already exists
+        List<Product> existingProducts = productRepository.findByNameAndPlaceName(request.getDrinkType(), request.getPlaceName());
+        
+        if (!existingProducts.isEmpty()) {
+            // Update existing product price
+            Product existingProduct = existingProducts.get(0);
+            existingProduct.setPrice(request.getPrice());
+            return ResponseEntity.ok(productRepository.save(existingProduct));
+        } else {
+            // Create new product
+            Product newProduct = new Product();
+            newProduct.setName(request.getDrinkType());
+            newProduct.setPrice(request.getPrice());
+            newProduct.setPlace(place);
+            newProduct.setCategory(drinksCategory);
+            newProduct.setLatitude(place.getLatitude());
+            newProduct.setLongitude(place.getLongitude());
+            
+            return ResponseEntity.ok(productRepository.save(newProduct));
+        }
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
