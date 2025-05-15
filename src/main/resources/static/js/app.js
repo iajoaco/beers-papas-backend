@@ -27,29 +27,86 @@ document.addEventListener('DOMContentLoaded', function() {
     const drinkVolume = document.getElementById('drinkVolume');
     const drinkSubtype = document.getElementById('drinkSubtype');
 
-    // Lista de tipos de cerveza
-    const beerTypes = ['Tercio', 'Botellin', 'Doble', 'Caña'];
+    // Configuración de opciones para cada tipo de bebida
+    const drinkOptionsConfig = {
+        'Cerveza': {
+            volumes: [
+                { value: '0.2', label: '0.2L (Caña)' },
+                { value: '0.3', label: '0.3L (Tercio)' },
+                { value: '0.5', label: '0.5L (Botellín)' },
+                { value: '1.0', label: '1.0L (Doble)' }
+            ],
+            subtypes: [
+                { value: 'Rubia', label: 'Rubia' },
+                { value: 'Negra', label: 'Negra' },
+                { value: 'Tostada', label: 'Tostada' },
+                { value: 'Especial', label: 'Especial' }
+            ]
+        },
+        'Sidra': {
+            volumes: [
+                { value: '0.2', label: '0.2L (Culín)' },
+                { value: '0.3', label: '0.3L (Media)' },
+                { value: '0.5', label: '0.5L (Botellín)' },
+                { value: '1.0', label: '1.0L (Botella)' }
+            ],
+            subtypes: [
+                { value: 'Natural', label: 'Natural' },
+                { value: 'Espumosa', label: 'Espumosa' },
+                { value: 'Dulce', label: 'Dulce' }
+            ]
+        },
+        'Tinto': {
+            volumes: [
+                { value: '0.2', label: '0.2L (Tinto)' },
+                { value: '0.3', label: '0.3L (Tinto)' },
+                { value: '0.5', label: '0.5L (Tinto)' }
+            ],
+            subtypes: [
+                { value: 'Normal', label: 'Normal' },
+                { value: 'Con Limón', label: 'Con Limón' },
+                { value: 'Con Frutas', label: 'Con Frutas' }
+            ]
+        },
+        'Vino': {
+            volumes: [
+                { value: '0.1', label: '0.1L (Copa)' },
+                { value: '0.5', label: '0.5L (Media Botella)' },
+                { value: '1.0', label: '1.0L (Botella)' }
+            ],
+            subtypes: [
+                { value: 'Tinto', label: 'Tinto' },
+                { value: 'Blanco', label: 'Blanco' },
+                { value: 'Rosado', label: 'Rosado' }
+            ]
+        }
+    };
 
-    contributeDrinkType.addEventListener('change', function() {
-        const selectedDrink = this.value;
-        if (beerTypes.includes(selectedDrink)) {
+    // Función para actualizar las opciones de volumen y tipo
+    function updateDrinkOptions(drinkType) {
+        const options = drinkOptionsConfig[drinkType];
+        if (options) {
+            // Actualizar opciones de volumen
+            drinkVolume.innerHTML = options.volumes.map(vol => 
+                `<option value="${vol.value}">${vol.label}</option>`
+            ).join('');
+
+            // Actualizar opciones de tipo
+            drinkSubtype.innerHTML = options.subtypes.map(sub => 
+                `<option value="${sub.value}">${sub.label}</option>`
+            ).join('');
+
             drinkOptions.classList.remove('hidden');
-            // Actualizar opciones de volumen según el tipo de bebida
-            if (selectedDrink === 'Caña') {
-                drinkVolume.value = '0.2';
-            } else if (selectedDrink === 'Tercio') {
-                drinkVolume.value = '0.3';
-            } else if (selectedDrink === 'Botellin') {
-                drinkVolume.value = '0.5';
-            } else if (selectedDrink === 'Doble') {
-                drinkVolume.value = '1.0';
-            }
         } else {
             drinkOptions.classList.add('hidden');
-            // Resetear los valores cuando se oculta el panel
-            drinkVolume.value = '';
-            drinkSubtype.value = '';
+            drinkVolume.innerHTML = '';
+            drinkSubtype.innerHTML = '';
         }
+    }
+
+    // Event listener para el cambio de tipo de bebida
+    contributeDrinkType.addEventListener('change', function() {
+        updateDrinkOptions(this.value);
     });
 
     // Toggle del menú móvil
@@ -210,8 +267,8 @@ document.addEventListener('DOMContentLoaded', function() {
             placeName: placeName
         };
 
-        // Añadir opciones adicionales si es una cerveza
-        if (drinkType === 'Tercio' || drinkType === 'Botellin' || drinkType === 'Doble' || drinkType === 'Caña') {
+        // Añadir opciones adicionales para todas las bebidas
+        if (drinkType) {
             contributionData.volume = drinkVolume.value;
             contributionData.subtype = drinkSubtype.value;
         }

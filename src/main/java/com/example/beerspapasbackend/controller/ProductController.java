@@ -26,8 +26,7 @@ public class ProductController {
     private final PlaceRepository placeRepository;
     private final ProductCategoryRepository categoryRepository;
     private static final List<String> VALID_DRINK_TYPES = Arrays.asList(
-        "Tercio", "Botellin", "Doble", "Caña", "Copa de vino", 
-        "Tinto de Verano", "Refrescos", "Sidra"
+        "Cerveza", "Sidra", "Tinto", "Vino"
     );
 
     @Autowired
@@ -171,30 +170,33 @@ public class ProductController {
         ProductCategory drinksCategory = categoryRepository.findByName("Bebidas")
                 .orElseThrow(() -> new RuntimeException("Drinks category not found"));
 
+        // Format product name with volume
+        String productName = String.format("%s(%s)", request.getDrinkType(), request.getVolume());
+
         // Check if product already exists
-        List<Product> existingProducts = productRepository.findByNameAndPlaceName(request.getDrinkType(), request.getPlaceName());
+        List<Product> existingProducts = productRepository.findByNameAndPlaceName(productName, request.getPlaceName());
         
         if (!existingProducts.isEmpty()) {
             // Update existing product price
             Product existingProduct = existingProducts.get(0);
             existingProduct.setPrice(request.getPrice());
-            // Update description with volume and subtype if provided
-            if (request.getVolume() != null && request.getSubtype() != null) {
+            // Update description with subtype and volume
+            if (request.getSubtype() != null) {
                 existingProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
             }
             return ResponseEntity.ok(productRepository.save(existingProduct));
         } else {
             // Create new product
             Product newProduct = new Product();
-            newProduct.setName(request.getDrinkType());
+            newProduct.setName(productName);
             newProduct.setPrice(request.getPrice());
             newProduct.setPlace(place);
             newProduct.setCategory(drinksCategory);
             newProduct.setLatitude(place.getLatitude());
             newProduct.setLongitude(place.getLongitude());
             
-            // Set description with volume and subtype if provided
-            if (request.getVolume() != null && request.getSubtype() != null) {
+            // Set description with subtype and volume
+            if (request.getSubtype() != null) {
                 newProduct.setDescription(String.format("%s %sL", request.getSubtype(), request.getVolume()));
             }
             
