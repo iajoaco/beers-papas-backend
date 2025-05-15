@@ -27,9 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const drinkVolume = document.getElementById('drinkVolume');
     const drinkSubtype = document.getElementById('drinkSubtype');
 
+    // Lista de tipos de cerveza
+    const beerTypes = ['Tercio', 'Botellin', 'Doble', 'Caña'];
+
     contributeDrinkType.addEventListener('change', function() {
         const selectedDrink = this.value;
-        if (selectedDrink === 'Tercio' || selectedDrink === 'Botellin' || selectedDrink === 'Doble' || selectedDrink === 'Caña') {
+        if (beerTypes.includes(selectedDrink)) {
             drinkOptions.classList.remove('hidden');
             // Actualizar opciones de volumen según el tipo de bebida
             if (selectedDrink === 'Caña') {
@@ -43,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             drinkOptions.classList.add('hidden');
+            // Resetear los valores cuando se oculta el panel
+            drinkVolume.value = '';
+            drinkSubtype.value = '';
         }
     });
 
