@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginPage = document.getElementById('loginPage');
     const heroSection = document.querySelector('.hero-section');
     const rateModal = document.getElementById('rateModal');
+    const contributeLink = document.getElementById('contributeLink');
+    const contributeModal = document.getElementById('contributeModal');
+    const closeContributeModal = document.getElementById('closeContributeModal');
+    const contributeForm = document.getElementById('contributeForm');
+    const contributeMessage = document.getElementById('contributeMessage');
 
     // Toggle del menú móvil
     menuToggle.addEventListener('click', function() {
@@ -44,12 +49,14 @@ document.addEventListener('DOMContentLoaded', function() {
         heroSection.classList.add('hidden');
         mapContainer.classList.add('hidden');
         rateModal.classList.add('hidden');
+        contributeModal.classList.add('hidden');
         
         // Muestra la que toca
         if (page === 'register') registerPage.classList.remove('hidden');
         else if (page === 'login') loginPage.classList.remove('hidden');
         else if (page === 'map') mapContainer.classList.remove('hidden');
         else if (page === 'hero') heroSection.classList.remove('hidden');
+        else if (page === 'contribute') contributeModal.classList.remove('hidden');
     }
 
     // Botón Inicio
@@ -108,6 +115,74 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchButton = document.getElementById('searchButton');
     searchButton.addEventListener('click', function() {
         performSearch();
+    });
+
+    // Mostrar modal de contribución
+    contributeLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!isLoggedIn()) {
+            showPage('login');
+        } else {
+            contributeModal.classList.remove('hidden');
+        }
+    });
+
+    // Cerrar modal de contribución
+    closeContributeModal.addEventListener('click', function() {
+        contributeModal.classList.add('hidden');
+    });
+
+    // Cerrar modal de contribución al hacer clic fuera
+    window.addEventListener('click', function(event) {
+        if (event.target === contributeModal) {
+            contributeModal.classList.add('hidden');
+        }
+    });
+
+    // Enviar contribución
+    contributeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        contributeMessage.textContent = '';
+        const drinkType = document.getElementById('contributeDrinkType').value;
+        const price = document.getElementById('contributePrice').value;
+        const placeName = document.getElementById('contributePlaceName').value.trim();
+        const token = localStorage.getItem('jwtToken');
+
+        if (!token) {
+            contributeMessage.style.color = '#d32f2f';
+            contributeMessage.textContent = 'Debes iniciar sesión para contribuir.';
+            return;
+        }
+
+        fetch('/api/products/contribute', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                drinkType: drinkType,
+                price: parseFloat(price),
+                placeName: placeName
+            })
+        })
+        .then(res => {
+            if (res.ok) return res.json();
+            return res.text().then(text => { throw new Error(text); });
+        })
+        .then(data => {
+            contributeMessage.style.color = '#388e3c';
+            contributeMessage.textContent = '¡Contribución enviada!';
+            setTimeout(() => {
+                contributeModal.classList.add('hidden');
+                contributeForm.reset();
+                contributeMessage.textContent = '';
+            }, 1500);
+        })
+        .catch(err => {
+            contributeMessage.style.color = '#d32f2f';
+            contributeMessage.textContent = 'Error: ' + (err.message || 'No se pudo enviar la contribución');
+        });
     });
 
     // Función para saber si el usuario está logueado

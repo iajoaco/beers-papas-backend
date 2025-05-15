@@ -521,4 +521,11 @@ body {
 .info-window .distance {
     color: #666;
     font-size: 0.9em;
+}
+
+/* Fondo para el modal de contribución */
+.contribute-modal-bg {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cerveza.jpg');
+    background-size: cover;
+    background-position: center;
 } 
