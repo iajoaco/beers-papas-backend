@@ -100,24 +100,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (options) {
             // Actualizar opciones de volumen
             if (options.volumes.length > 0) {
-                drinkVolume.innerHTML = options.volumes.map(vol => 
-                    `<option value="${vol.value}">${vol.label}</option>`
-                ).join('');
+                const defaultOption = drinkVolume.querySelector('option[value=""]');
+                drinkVolume.innerHTML = defaultOption.outerHTML + 
+                    options.volumes.map(vol => 
+                        `<option value="${vol.value}">${vol.label}</option>`
+                    ).join('');
                 drinkVolume.parentElement.classList.remove('hidden');
             } else {
                 drinkVolume.parentElement.classList.add('hidden');
             }
 
             // Actualizar opciones de tipo
-            drinkSubtype.innerHTML = options.subtypes.map(sub => 
-                `<option value="${sub.value}">${sub.label}</option>`
-            ).join('');
+            const defaultSubtypeOption = drinkSubtype.querySelector('option[value=""]');
+            drinkSubtype.innerHTML = defaultSubtypeOption.outerHTML + 
+                options.subtypes.map(sub => 
+                    `<option value="${sub.value}">${sub.label}</option>`
+                ).join('');
 
             drinkOptions.classList.remove('hidden');
         } else {
             drinkOptions.classList.add('hidden');
-            drinkVolume.innerHTML = '';
-            drinkSubtype.innerHTML = '';
+            drinkVolume.innerHTML = '<option value="" disabled selected>Volumen</option>';
+            drinkSubtype.innerHTML = '<option value="" disabled selected>Tipo</option>';
         }
     }
 
