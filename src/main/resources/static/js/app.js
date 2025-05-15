@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerLink = document.getElementById('registerLink');
     const rateLink = document.getElementById('rateLink');
     const searchLink = document.getElementById('searchLink');
+    const contributeLink = document.getElementById('contributeLink');
     const mapContainer = document.getElementById('map-container');
     const homeLink = document.getElementById('homeLink');
     const logoutLink = document.getElementById('logoutLink');
@@ -12,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginPage = document.getElementById('loginPage');
     const heroSection = document.querySelector('.hero-section');
     const rateModal = document.getElementById('rateModal');
-    const contributeLink = document.getElementById('contributeLink');
     const contributeModal = document.getElementById('contributeModal');
     const closeContributeModal = document.getElementById('closeContributeModal');
     const contributeForm = document.getElementById('contributeForm');
@@ -35,8 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateAuthUI() {
         if (isLoggedIn()) {
             logoutLink.style.display = '';
+            rateLink.style.display = '';
+            contributeLink.style.display = '';
         } else {
             logoutLink.style.display = 'none';
+            rateLink.style.display = '';
+            contributeLink.style.display = '';
         }
     }
     updateAuthUI();
@@ -56,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (page === 'login') loginPage.classList.remove('hidden');
         else if (page === 'map') mapContainer.classList.remove('hidden');
         else if (page === 'hero') heroSection.classList.remove('hidden');
-        else if (page === 'contribute') contributeModal.classList.remove('hidden');
     }
 
     // Botón Inicio
@@ -79,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showPage('register');
     });
 
-    // Mostrar página de login
+    // Mostrar modal de valoración
     rateLink.addEventListener('click', function(e) {
         e.preventDefault();
         if (!isLoggedIn()) {
@@ -87,34 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             rateModal.classList.remove('hidden');
         }
-    });
-
-    // Mostrar mapa
-    searchLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        showPage('map');
-        if (typeof map === 'undefined') {
-            initMap();
-        }
-    });
-
-    // Cerrar modal de valoración
-    const closeRateModal = document.getElementById('closeRateModal');
-    closeRateModal.addEventListener('click', function() {
-        rateModal.classList.add('hidden');
-    });
-
-    // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', function(event) {
-        if (event.target === rateModal) {
-            rateModal.classList.add('hidden');
-        }
-    });
-
-    // Botón de búsqueda
-    const searchButton = document.getElementById('searchButton');
-    searchButton.addEventListener('click', function() {
-        performSearch();
     });
 
     // Mostrar modal de contribución
@@ -127,16 +102,52 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Cerrar modal de contribución
-    closeContributeModal.addEventListener('click', function() {
-        contributeModal.classList.add('hidden');
+    // Mostrar mapa
+    searchLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showPage('map');
+        if (typeof map === 'undefined') {
+            initMap();
+        }
     });
 
-    // Cerrar modal de contribución al hacer clic fuera
+    // Cerrar modales
+    const closeRateModal = document.getElementById('closeRateModal');
+    const closeRegisterPage = document.getElementById('closeRegisterPage');
+    const closeLoginPage = document.getElementById('closeLoginPage');
+
+    if (closeRateModal) {
+        closeRateModal.addEventListener('click', function() {
+            rateModal.classList.add('hidden');
+        });
+    }
+
+    if (closeRegisterPage) {
+        closeRegisterPage.addEventListener('click', function() {
+            showPage('hero');
+        });
+    }
+
+    if (closeLoginPage) {
+        closeLoginPage.addEventListener('click', function() {
+            showPage('hero');
+        });
+    }
+
+    // Cerrar modales al hacer clic fuera
     window.addEventListener('click', function(event) {
+        if (event.target === rateModal) {
+            rateModal.classList.add('hidden');
+        }
         if (event.target === contributeModal) {
             contributeModal.classList.add('hidden');
         }
+    });
+
+    // Botón de búsqueda
+    const searchButton = document.getElementById('searchButton');
+    searchButton.addEventListener('click', function() {
+        performSearch();
     });
 
     // Enviar contribución
@@ -322,22 +333,6 @@ document.addEventListener('DOMContentLoaded', function() {
             rateMessage.textContent = 'Error: ' + (err.message || 'No se pudo enviar la valoración');
         });
     });
-
-    // Cruz para cerrar la pantalla de registro
-    const closeRegisterPage = document.getElementById('closeRegisterPage');
-    if (closeRegisterPage) {
-        closeRegisterPage.addEventListener('click', function() {
-            showPage('hero');
-        });
-    }
-
-    // Cruz para cerrar la pantalla de login
-    const closeLoginPage = document.getElementById('closeLoginPage');
-    if (closeLoginPage) {
-        closeLoginPage.addEventListener('click', function() {
-            showPage('hero');
-        });
-    }
 
     // Al cargar, mostrar la pantalla principal
     showPage('hero');
