@@ -26,7 +26,7 @@ public class ProductController {
     private final PlaceRepository placeRepository;
     private final ProductCategoryRepository categoryRepository;
     private static final List<String> VALID_DRINK_TYPES = Arrays.asList(
-        "Cerveza", "Sidra", "Tinto", "Vino"
+        "Cerveza", "Sidra", "Tinto", "Vino", "Refresco"
     );
 
     @Autowired
