@@ -448,7 +448,7 @@ body {
 
 /* Fondo para registro */
 .register-page {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cerveza_calamares.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/cerveza_calamares_mejor_calidad.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -563,7 +563,7 @@ body {
 
 /* Fondo para el modal de contribución */
 .contribute-modal-bg {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/brindis_cerves.jpg');
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/brindis_cerves_mejor_calidad.jpg');
     background-size: cover;
     background-position: center;
 }
