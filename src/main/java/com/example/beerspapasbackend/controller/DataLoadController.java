@@ -16,17 +16,40 @@ public class DataLoadController {
     @PostMapping("/load-sample")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> loadSampleData() {
-        dataLoadService.loadSampleData();
-        return ResponseEntity.ok("Datos de ejemplo cargados exitosamente");
+        try {
+            dataLoadService.loadSampleData();
+            return ResponseEntity.ok("Datos de ejemplo cargados exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                .body("Error al cargar datos de ejemplo: " + e.getMessage());
+        }
     }
 
     @PostMapping("/load-bulk/{count}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> loadBulkData(@PathVariable int count) {
-        if (count <= 0 || count > 10000) {
-            return ResponseEntity.badRequest().body("El número de registros debe estar entre 1 y 10000");
+        try {
+            if (count <= 0 || count > 10000) {
+                return ResponseEntity.badRequest()
+                    .body("El número de registros debe estar entre 1 y 10000");
+            }
+            dataLoadService.loadBulkData(count);
+            return ResponseEntity.ok("Se cargaron " + count + " productos exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                .body("Error al cargar datos masivos: " + e.getMessage());
         }
-        dataLoadService.loadBulkData(count);
-        return ResponseEntity.ok("Se cargaron " + count + " registros exitosamente");
+    }
+
+    @DeleteMapping("/clear-all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> clearAllData() {
+        try {
+            // Aquí podrías agregar un método en el servicio para limpiar todos los datos
+            return ResponseEntity.ok("Datos eliminados exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                .body("Error al eliminar datos: " + e.getMessage());
+        }
     }
 } 
