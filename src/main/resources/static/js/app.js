@@ -265,15 +265,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Cerrar modales al hacer clic fuera
     window.addEventListener('click', function(event) {
-        if (event.target === rateModal) {
-            rateModal.classList.add('hidden');
+        // Verificar si el clic fue en el fondo del modal (no en su contenido)
+        if (event.target.classList.contains('modal')) {
+            const modalContent = event.target.querySelector('.modal-content');
+            // Solo cerrar si el clic fue en el fondo y no en el contenido
+            if (modalContent && !modalContent.contains(event.target)) {
+                if (event.target === rateModal) {
+                    rateModal.classList.add('hidden');
+                }
+                if (event.target === contributeModal) {
+                    contributeModal.classList.add('hidden');
+                }
+                if (event.target === loginPage) {
+                    showPage('hero');
+                }
+            }
         }
-        if (event.target === contributeModal) {
-            contributeModal.classList.add('hidden');
-        }
-        if (event.target === loginPage) {
-            showPage('hero');
-        }
+    });
+
+    // Prevenir que los clics en el contenido del modal se propaguen
+    document.querySelectorAll('.modal-content').forEach(content => {
+        content.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+
+    // Prevenir que los clics en los inputs y selects se propaguen
+    document.querySelectorAll('.modal-content input, .modal-content select, .modal-content textarea').forEach(element => {
+        element.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     });
 
     // Botón de búsqueda
